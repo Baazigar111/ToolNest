@@ -6,7 +6,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
+from app.admin.setup import setup_admin
 from app.config import get_settings
 from app.errors import register_error_handlers
 from app.routers.health import router as health_router
@@ -34,7 +36,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     reset_engine()
 
 
-def create_app() -> FastAPI:
+def create_app(engine=None) -> FastAPI:
     """FastAPI application factory for ToolNest."""
     settings = get_settings()
 
@@ -51,6 +53,15 @@ def create_app() -> FastAPI:
     # Security Headers
     app.add_middleware(SecurityHeadersMiddleware)
 
+    # Signed Session Middleware for Admin Authentication
+    app.add_middleware(
+        SessionMiddleware,
+        secret_key=settings.admin_secret_key,
+        session_cookie=settings.session_cookie_name,
+        https_only=settings.cookie_secure,
+        same_site="lax",
+    )
+
     # CORS Configuration
     app.add_middleware(
         CORSMiddleware,
@@ -65,6 +76,9 @@ def create_app() -> FastAPI:
 
     # Mount Core Routers
     app.include_router(health_router)
+
+    # Mount SQLAdmin Panel
+    setup_admin(app, engine=engine)
 
     return app
 

@@ -140,6 +140,19 @@ class ServerBusyError(ToolNestError):
         )
 
 
+class ToolDisabledError(ToolNestError):
+    def __init__(
+        self,
+        message: str = "This tool is temporarily unavailable for maintenance. Please check back soon",
+    ) -> None:
+        super().__init__(
+            code="TOOL_DISABLED",
+            message=message,
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            headers={"Retry-After": "30"},
+        )
+
+
 class TimeoutError(ToolNestError):
     def __init__(
         self,

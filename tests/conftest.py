@@ -4,6 +4,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from app.config import get_settings
 from app.db import reset_engine
@@ -38,6 +39,7 @@ def sqlite_engine():
     engine = create_engine(
         "sqlite:///:memory:",
         connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
     )
     Base.metadata.create_all(bind=engine)
     yield engine
@@ -54,3 +56,13 @@ def db_session(sqlite_engine):
         yield session
     finally:
         session.close()
+
+
+@pytest.fixture
+def admin_client(sqlite_engine, monkeypatch):
+    """FastAPI TestClient with SQLAdmin attached to SQLite test database."""
+    session_factory = sessionmaker(autocommit=False, autoflush=False, bind=sqlite_engine)
+    monkeypatch.setattr("app.admin.setup.get_session_factory", lambda: session_factory)
+    app = create_app(engine=sqlite_engine)
+    with TestClient(app) as test_client:
+        yield test_client
