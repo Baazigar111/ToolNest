@@ -1,0 +1,1 @@
+"""SQLAdmin administration panel package."""
