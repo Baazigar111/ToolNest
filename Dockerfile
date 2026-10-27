@@ -21,10 +21,11 @@ COPY pyproject.toml uv.lock ./
 # Install production dependencies using frozen lockfile
 RUN uv sync --frozen --no-dev --no-install-project
 
-# Copy application source code and migrations
+# Copy application source code, static site builder, and migrations
 COPY app/ app/
 COPY migrations/ migrations/
 COPY scripts/ scripts/
+COPY site_builder/ site_builder/
 COPY alembic.ini .
 COPY README.md .
 
@@ -32,4 +33,5 @@ COPY README.md .
 EXPOSE 8000
 
 # Execute with uvicorn listening on 0.0.0.0 and platform-provided PORT
-CMD ["sh", "-c", "uv run uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+
