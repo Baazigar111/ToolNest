@@ -29,13 +29,24 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload"
         return response
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Application lifespan manager for startup and graceful shutdown."""
-    # Startup actions
+    # Production security sanity checks
+    settings = get_settings()
+    if settings.environment.lower() == "production":
+        import logging
+        logger = logging.getLogger("uvicorn.error")
+        if settings.debug:
+            logger.warning("SECURITY WARNING: DEBUG mode is enabled in production!")
+        if settings.admin_secret_key == "toolnest-default-dev-secret-key-32charsmin":
+            logger.warning("SECURITY WARNING: Using default ADMIN_SECRET_KEY in production! Please configure a strong secret key.")
+        if not settings.cookie_secure:
+            logger.warning("SECURITY WARNING: COOKIE_SECURE is False in production. Session cookies will not enforce HTTPS.")
     yield
     # Shutdown actions (e.g., disposing cached database engine)
     from app.db import reset_engine
@@ -46,13 +57,16 @@ def create_app(engine=None) -> FastAPI:
     """FastAPI application factory for ToolNest."""
     settings = get_settings()
 
+    # Hide interactive API documentation in production unless explicitly enabled
+    show_docs = settings.environment.lower() != "production" or settings.enable_api_docs
+
     app = FastAPI(
         title="ToolNest API",
         description="Backend API and file processing service for ToolNest free online tools.",
         version="1.0.0",
-        docs_url="/docs",
-        redoc_url="/redoc",
-        openapi_url="/openapi.json",
+        docs_url="/docs" if show_docs else None,
+        redoc_url="/redoc" if show_docs else None,
+        openapi_url="/openapi.json" if show_docs else None,
         lifespan=lifespan,
     )
 

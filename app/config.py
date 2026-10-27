@@ -24,6 +24,10 @@ class Settings(BaseSettings):
     debug: bool = Field(default=False, description="Debug mode flag")
     app_name: str = Field(default="ToolNest", description="Application branding name")
     api_base_url: str = Field(default="http://localhost:8000", description="Public URL of the FastAPI backend")
+    enable_api_docs: bool = Field(
+        default=False,
+        description="Explicitly enable Swagger /docs and /redoc in production (disabled by default in production)",
+    )
 
     # Frontend and CORS
     frontend_origin: str = Field(
