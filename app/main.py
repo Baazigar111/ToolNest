@@ -11,7 +11,13 @@ from starlette.middleware.sessions import SessionMiddleware
 from app.admin.setup import setup_admin
 from app.config import get_settings
 from app.errors import register_error_handlers
-from app.routers.health import router as health_router
+from app.routers import (
+    health_router,
+    image_router,
+    pdf_router,
+    publish_router,
+    qr_router,
+)
 
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
@@ -76,6 +82,10 @@ def create_app(engine=None) -> FastAPI:
 
     # Mount Core Routers
     app.include_router(health_router)
+    app.include_router(publish_router)
+    app.include_router(qr_router)
+    app.include_router(pdf_router)
+    app.include_router(image_router)
 
     # Mount SQLAdmin Panel
     setup_admin(app, engine=engine)

@@ -26,9 +26,23 @@ def setup_test_env(monkeypatch):
 
 
 @pytest.fixture
-def client():
-    """FastAPI TestClient instance."""
-    app = create_app()
+def client(sqlite_engine, monkeypatch):
+    """FastAPI TestClient instance bound to SQLite test database."""
+    from app.db import get_db
+
+    session_factory = sessionmaker(autocommit=False, autoflush=False, bind=sqlite_engine)
+    monkeypatch.setattr("app.admin.setup.get_session_factory", lambda: session_factory)
+    monkeypatch.setattr("app.db.get_session_factory", lambda: session_factory)
+    app = create_app(engine=sqlite_engine)
+
+    def override_get_db():
+        session = session_factory()
+        try:
+            yield session
+        finally:
+            session.close()
+
+    app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as test_client:
         yield test_client
 
@@ -61,8 +75,21 @@ def db_session(sqlite_engine):
 @pytest.fixture
 def admin_client(sqlite_engine, monkeypatch):
     """FastAPI TestClient with SQLAdmin attached to SQLite test database."""
+    from app.db import get_db
+
     session_factory = sessionmaker(autocommit=False, autoflush=False, bind=sqlite_engine)
     monkeypatch.setattr("app.admin.setup.get_session_factory", lambda: session_factory)
+    monkeypatch.setattr("app.db.get_session_factory", lambda: session_factory)
     app = create_app(engine=sqlite_engine)
+
+    def override_get_db():
+        session = session_factory()
+        try:
+            yield session
+        finally:
+            session.close()
+
+    app.dependency_overrides[get_db] = override_get_db
+
     with TestClient(app) as test_client:
         yield test_client

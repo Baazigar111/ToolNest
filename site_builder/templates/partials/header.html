@@ -1,0 +1,31 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="site-brand" aria-label="ToolNest Home">
+      <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="currentColor"/>
+        <path d="M10 22L16 10L22 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12.5 18H19.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span>ToolNest</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main Navigation">
+      <a href="/" class="nav-link {% if page_type == 'home' %}active{% endif %}">Home</a>
+      <a href="/category/pdf" class="nav-link {% if current_category and current_category.slug == 'pdf' %}active{% endif %}">PDF</a>
+      <a href="/category/image" class="nav-link {% if current_category and current_category.slug == 'image' %}active{% endif %}">Image</a>
+      <a href="/category/finance" class="nav-link {% if current_category and current_category.slug == 'finance' %}active{% endif %}">Finance</a>
+      <a href="/blog" class="nav-link {% if page_type == 'blog' %}active{% endif %}">Guides</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle theme">
+        <span class="theme-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+<div id="api-status-banner" class="api-alert-banner" role="status"></div>

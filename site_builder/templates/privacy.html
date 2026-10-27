@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="content-section" style="max-width: 800px; margin: 0 auto 3rem;">
+  <h1 class="tool-page-h1">Privacy Policy</h1>
+  <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2rem;">Last Updated: October 2026</p>
+
+  <div class="article-prose">
+    <p>
+      At <strong>ToolNest</strong>, protecting your privacy is our foundational commitment. This policy describes how data is handled when you visit our website and use our free tools.
+    </p>
+
+    <h3>1. File Processing and Zero Retention</h3>
+    <p>
+      When you upload files (such as PDFs or images) to our processing tools:
+    </p>
+    <ul>
+      <li>Your files are transmitted securely over encrypted HTTPS connections.</li>
+      <li>Files are processed exclusively in transient volatile memory.</li>
+      <li>Any temporary artifacts generated during conversion are permanently deleted immediately in a protected cleanup routine.</li>
+      <li>We <strong>never</strong> inspect file contents, read private data, or store filenames in our databases or server logs.</li>
+    </ul>
+
+    <h3>2. Client-Side Browser Utilities</h3>
+    <p>
+      Our text utilities (Word Counter, Case Converter, JSON Formatter) and financial calculators (EMI, SIP, GST) execute entirely in your local browser through client-side JavaScript. <strong>Your text and calculations are never transmitted to our servers.</strong>
+    </p>
+
+    <h3>3. Cookies</h3>
+    <p>
+      ToolNest strictly limits cookie usage to essential functions:
+    </p>
+    <ul>
+      <li><strong>Theme Preference:</strong> Remembers your light or dark mode selection.</li>
+      <li><strong>Daily Usage Throttling:</strong> An anonymous, hashed counter to prevent abusive automated traffic and ensure fair server access for all visitors.</li>
+    </ul>
+    <p>We do not use invasive tracking cookies or sell your personal data to third parties.</p>
+
+    <h3>4. Analytics & Logging</h3>
+    <p>
+      We track aggregated usage totals (e.g. number of successful merges per day) to manage server capacity. These counters contain only aggregate integers and <strong>never record visitor IP addresses, individual user identifiers, or filenames</strong>.
+    </p>
+  </div>
+</article>
+{% endblock %}

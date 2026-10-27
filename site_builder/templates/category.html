@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="tool-page-header">
+  <h1 class="tool-page-h1">{{ category.name }}</h1>
+  <p class="tool-page-intro">{{ category.description }}</p>
+</header>
+
+<section class="category-block">
+  <div class="tool-grid">
+    {% for tool in category.tools %}
+    {% if tool.is_active %}
+    <a href="/{{ tool.slug }}" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">{{ tool.name }}</div>
+      </div>
+      <p class="tool-card-desc">{{ tool.description }}</p>
+      <div class="tool-card-footer">
+        <span>Open Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

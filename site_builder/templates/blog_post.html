@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ post.title }}",
+  "description": "{{ post.meta_description | default(post.description) }}",
+  "datePublished": "{{ post.published_at.isoformat() if post.published_at else '' }}",
+  "author": {
+    "@type": "Organization",
+    "name": "ToolNest"
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<article class="content-section" style="max-width: 800px; margin: 0 auto 3rem;">
+  <header style="margin-bottom: 2rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1.5rem;">
+    <div style="font-size: 0.875rem; color: var(--primary); font-weight: 600; margin-bottom: 0.5rem;">
+      <a href="/blog">&larr; Back to Guides</a>
+    </div>
+    <h1 class="tool-page-h1" style="text-align: left; margin-bottom: 0.75rem;">{{ post.title }}</h1>
+    <div style="font-size: 0.875rem; color: var(--text-muted);">
+      Published on {{ post.published_at.strftime('%B %d, %Y') if post.published_at else 'Recent' }}
+    </div>
+  </header>
+
+  <div class="article-prose">
+    {{ post.body | safe }}
+  </div>
+
+  {% if post.tool_associations and post.tool_associations|length > 0 %}
+  <div style="margin-top: 3rem; padding: 1.5rem; background-color: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg);">
+    <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">Tools mentioned in this guide:</h3>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+      {% for assoc in post.tool_associations %}
+      {% if assoc.tool.is_active %}
+      <a href="/{{ assoc.tool.slug }}" class="btn btn-secondary" style="font-size: 0.875rem;">
+        {{ assoc.tool.name }} &rarr;
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</article>
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block structured_data %}
+<!-- SoftwareApplication, BreadcrumbList, and FAQPage Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "{{ tool.name }}",
+      "operatingSystem": "All",
+      "applicationCategory": "UtilitiesApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "{{ tool.meta_description }}"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "{{ site_url }}/"
+        },
+        {% if tool.category %}
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "{{ tool.category.name }}",
+          "item": "{{ site_url }}/category/{{ tool.category.slug }}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "{{ tool.name }}",
+          "item": "{{ site_url }}/{{ tool.slug }}"
+        }
+        {% else %}
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "{{ tool.name }}",
+          "item": "{{ site_url }}/{{ tool.slug }}"
+        }
+        {% endif %}
+      ]
+    }
+    {% if tool.faqs and tool.faqs|length > 0 %},
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {% for faq in tool.faqs %}
+        {
+          "@type": "Question",
+          "name": "{{ faq.question }}",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "{{ faq.answer }}"
+          }
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    }
+    {% endif %}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<header class="tool-page-header">
+  <h1 class="tool-page-h1">{{ tool.name }}</h1>
+  <p class="tool-page-intro">{{ tool.description }}</p>
+</header>
+
+<!-- Tool Interactive Workspace -->
+{% if tool.tool_type in ['pdf', 'image', 'qr'] %}
+  {% include 'partials/tool_upload.html' %}
+{% elif tool.tool_type == 'calculator' %}
+  {% include 'partials/tool_calculator.html' %}
+{% else %}
+  {% include 'partials/tool_text.html' %}
+{% endif %}
+
+<!-- How To Steps -->
+{% if tool.how_to_steps %}
+<section class="content-section">
+  <h2 class="section-h2">How to Use {{ tool.name }}</h2>
+  <div class="how-to-steps">
+    {% for step in tool.how_to_steps %}
+    <div class="step-card">
+      <div class="step-number">{{ loop.index }}</div>
+      <div>
+        <p style="font-weight: 500;">{{ step }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- Detailed SEO Explanation (300+ Words) -->
+<section class="content-section">
+  <h2 class="section-h2">About {{ tool.name }}</h2>
+  <div class="article-prose">
+    {% if tool.long_description %}
+      {{ tool.long_description | safe }}
+    {% else %}
+      <p>
+        Welcome to {{ tool.name }} on ToolNest — the fast, free, and secure way to handle your everyday digital tasks directly in your web browser. Whether you are submitting application forms, compressing images for job portals, managing receipts, or calculating financial investments, ToolNest gives you reliable utilities without unnecessary friction.
+      </p>
+      <p>
+        Unlike many alternative tools that require credit cards, trial subscriptions, or mandatory account creation, ToolNest was built from the ground up to respect your time and privacy. There is nothing to install and zero software bloat. Simply open the page on your mobile phone, tablet, or desktop computer, and start using the tool right away.
+      </p>
+      <h3>Security and Complete File Privacy</h3>
+      <p>
+        Security is our highest priority. All files uploaded to ToolNest server tools are processed in volatile memory and purged immediately after execution. We never keep archives, inspect user contents, or store filenames in our databases or access logs. For our browser-based text formatting and calculator tools, data never even leaves your local computer.
+      </p>
+      <h3>Built for Speed and Reliability</h3>
+      <p>
+        Hosted across global content delivery networks, ToolNest pages load in milliseconds even on standard mobile data connections. Bookmark this page for quick access whenever you need dependable everyday tools.
+      </p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Frequently Asked Questions -->
+{% if tool.faqs and tool.faqs|length > 0 %}
+<section class="content-section">
+  <h2 class="section-h2">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    {% for faq in tool.faqs %}
+    <div class="faq-item">
+      <button class="faq-question" type="button">
+        <span>{{ faq.question }}</span>
+        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+      <div class="faq-answer">
+        <p>{{ faq.answer }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- Related Tools -->
+{% if related_tools and related_tools|length > 0 %}
+<section class="content-section">
+  <h2 class="section-h2">Related Tools</h2>
+  <div class="tool-grid">
+    {% for rtool in related_tools %}
+    <a href="/{{ rtool.slug }}" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">{{ rtool.name }}</div>
+      </div>
+      <p class="tool-card-desc">{{ rtool.description }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

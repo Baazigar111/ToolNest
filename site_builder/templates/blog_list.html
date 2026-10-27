@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="tool-page-header">
+  <h1 class="tool-page-h1">Guides & Tutorials</h1>
+  <p class="tool-page-intro">Helpful step-by-step instructions on PDF handling, photo compression, and financial planning.</p>
+</header>
+
+<section class="content-section">
+  <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+    {% for post in posts %}
+    <article style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow-sm);">
+      <h2 style="font-size: 1.375rem; font-weight: 700; margin-bottom: 0.5rem;">
+        <a href="/blog/{{ post.slug }}">{{ post.title }}</a>
+      </h2>
+      <p style="font-size: 0.9375rem; color: var(--text-secondary); margin-bottom: 1rem;">
+        {{ post.description }}
+      </p>
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.8125rem; color: var(--text-muted);">
+        <span>{{ post.published_at.strftime('%B %d, %Y') if post.published_at else 'Recent' }}</span>
+        <a href="/blog/{{ post.slug }}" style="font-weight: 600;">Read Guide &rarr;</a>
+      </div>
+    </article>
+    {% else %}
+    <div style="text-align: center; padding: 3rem 0; color: var(--text-muted);">
+      <p>No guides published yet. Check back soon for tutorials and productivity tips!</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

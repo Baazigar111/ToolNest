@@ -1,0 +1,9 @@
+{% if ads_enabled %}
+<div class="ad-slot-container enabled ad-slot-{{ slot_position | default('banner') }}" aria-hidden="false">
+  <div class="ad-slot-banner">
+    <!-- AdSense Slot: {{ slot_position | default('banner') }} -->
+  </div>
+</div>
+{% else %}
+<div class="ad-slot-container ad-slot-{{ slot_position | default('banner') }}" aria-hidden="true" style="display: none;"></div>
+{% endif %}

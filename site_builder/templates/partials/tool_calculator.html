@@ -1,0 +1,237 @@
+<div class="tool-workspace" id="calculator-app" data-tool-slug="{{ tool.slug }}">
+  {% if tool.slug == 'emi-calculator' %}
+  <!-- EMI Calculator Workspace -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; align-items: start;">
+    <div>
+      <!-- Loan Amount -->
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label for="emi-amount" style="font-weight: 600;">Loan Amount (₹)</label>
+          <input type="number" id="emi-amount-input" min="10000" max="10000000" step="10000" value="500000" style="width: 140px; padding: 0.375rem 0.625rem; font-weight: 700; color: var(--primary); text-align: right; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface);">
+        </div>
+        <input type="range" id="emi-amount" min="10000" max="10000000" step="10000" value="500000" style="width: 100%; accent-color: var(--primary); cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          <span>₹ 10K</span>
+          <span>₹ 50L</span>
+          <span>₹ 1 Cr</span>
+        </div>
+      </div>
+
+      <!-- Interest Rate -->
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label for="emi-rate" style="font-weight: 600;">Annual Interest Rate (%)</label>
+          <input type="number" id="emi-rate-input" min="1" max="25" step="0.1" value="8.5" style="width: 100px; padding: 0.375rem 0.625rem; font-weight: 700; color: var(--primary); text-align: right; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface);">
+        </div>
+        <input type="range" id="emi-rate" min="1" max="25" step="0.1" value="8.5" style="width: 100%; accent-color: var(--primary); cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          <span>1%</span>
+          <span>12%</span>
+          <span>25%</span>
+        </div>
+      </div>
+
+      <!-- Loan Tenure -->
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label for="emi-tenure" style="font-weight: 600;">Tenure (Years)</label>
+          <input type="number" id="emi-tenure-input" min="1" max="30" step="1" value="5" style="width: 100px; padding: 0.375rem 0.625rem; font-weight: 700; color: var(--primary); text-align: right; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface);">
+        </div>
+        <input type="range" id="emi-tenure" min="1" max="30" step="1" value="5" style="width: 100%; accent-color: var(--primary); cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          <span>1 Yr</span>
+          <span>15 Yrs</span>
+          <span>30 Yrs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Panel -->
+    <div style="background-color: var(--bg-subtle); border: 1px solid var(--border-subtle); padding: 1.75rem; border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: 1.25rem;">
+      <div>
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.25rem;">Monthly EMI</div>
+        <div id="emi-result-monthly" style="font-size: 2.25rem; font-weight: 800; color: var(--primary); line-height: 1.2;">₹ 10,258</div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem; display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.9375rem; color: var(--text-secondary);">Principal Amount:</span>
+        <span id="emi-result-principal" style="font-size: 1.125rem; font-weight: 700;">₹ 5,00,000</span>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.9375rem; color: var(--text-secondary);">Total Interest Payable:</span>
+        <span id="emi-result-interest" style="font-size: 1.125rem; font-weight: 700; color: var(--accent);">₹ 1,15,487</span>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-top: 1px dashed var(--border-strong); padding-top: 0.75rem;">
+        <span style="font-size: 0.9375rem; font-weight: 600; color: var(--text-primary);">Total Amount Payable:</span>
+        <span id="emi-result-total" style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">₹ 6,15,487</span>
+      </div>
+
+      <!-- Ratio Breakdown Bar -->
+      <div style="margin-top: 0.5rem;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.375rem;">
+          <span id="emi-bar-principal-label">Principal (81%)</span>
+          <span id="emi-bar-interest-label">Interest (19%)</span>
+        </div>
+        <div style="display: flex; height: 10px; border-radius: var(--radius-full); overflow: hidden; background-color: var(--border-subtle);">
+          <div id="emi-bar-principal" style="width: 81%; background-color: var(--primary); transition: width 0.2s ease;"></div>
+          <div id="emi-bar-interest" style="width: 19%; background-color: var(--accent); transition: width 0.2s ease;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% elif tool.slug == 'sip-calculator' %}
+  <!-- SIP Calculator Workspace -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; align-items: start;">
+    <div>
+      <!-- Monthly Investment -->
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label for="sip-amount" style="font-weight: 600;">Monthly Investment (₹)</label>
+          <input type="number" id="sip-amount-input" min="500" max="100000" step="500" value="5000" style="width: 130px; padding: 0.375rem 0.625rem; font-weight: 700; color: var(--primary); text-align: right; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface);">
+        </div>
+        <input type="range" id="sip-amount" min="500" max="100000" step="500" value="5000" style="width: 100%; accent-color: var(--primary); cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          <span>₹ 500</span>
+          <span>₹ 50,000</span>
+          <span>₹ 1,00,000</span>
+        </div>
+      </div>
+
+      <!-- Expected Return Rate -->
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label for="sip-rate" style="font-weight: 600;">Expected Return Rate (p.a %)</label>
+          <input type="number" id="sip-rate-input" min="1" max="30" step="0.5" value="12" style="width: 90px; padding: 0.375rem 0.625rem; font-weight: 700; color: var(--primary); text-align: right; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface);">
+        </div>
+        <input type="range" id="sip-rate" min="1" max="30" step="0.5" value="12" style="width: 100%; accent-color: var(--primary); cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          <span>1%</span>
+          <span>15%</span>
+          <span>30%</span>
+        </div>
+      </div>
+
+      <!-- Time Period -->
+      <div style="margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <label for="sip-years" style="font-weight: 600;">Time Period (Years)</label>
+          <input type="number" id="sip-years-input" min="1" max="35" step="1" value="10" style="width: 90px; padding: 0.375rem 0.625rem; font-weight: 700; color: var(--primary); text-align: right; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface);">
+        </div>
+        <input type="range" id="sip-years" min="1" max="35" step="1" value="10" style="width: 100%; accent-color: var(--primary); cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+          <span>1 Yr</span>
+          <span>15 Yrs</span>
+          <span>35 Yrs</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Panel -->
+    <div style="background-color: var(--bg-subtle); border: 1px solid var(--border-subtle); padding: 1.75rem; border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: 1.25rem;">
+      <div>
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.25rem;">Expected Future Value</div>
+        <div id="sip-result-total" style="font-size: 2.25rem; font-weight: 800; color: var(--success); line-height: 1.2;">₹ 11,61,695</div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem; display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.9375rem; color: var(--text-secondary);">Total Invested Amount:</span>
+        <span id="sip-result-invested" style="font-size: 1.125rem; font-weight: 700;">₹ 6,00,000</span>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.9375rem; color: var(--text-secondary);">Estimated Wealth Gain:</span>
+        <span id="sip-result-returns" style="font-size: 1.125rem; font-weight: 700; color: var(--success);">₹ 5,61,695</span>
+      </div>
+
+      <!-- Ratio Breakdown Bar -->
+      <div style="margin-top: 0.5rem;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.375rem;">
+          <span id="sip-bar-invested-label">Invested (52%)</span>
+          <span id="sip-bar-returns-label">Returns (48%)</span>
+        </div>
+        <div style="display: flex; height: 10px; border-radius: var(--radius-full); overflow: hidden; background-color: var(--border-subtle);">
+          <div id="sip-bar-invested" style="width: 52%; background-color: var(--primary); transition: width 0.2s ease;"></div>
+          <div id="sip-bar-returns" style="width: 48%; background-color: var(--success); transition: width 0.2s ease;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% elif tool.slug == 'gst-calculator' %}
+  <!-- GST Calculator Workspace -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; align-items: start;">
+    <div>
+      <div style="margin-bottom: 1.5rem;">
+        <label for="gst-amount" style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Initial Amount (₹)</label>
+        <input type="number" id="gst-amount" class="btn btn-secondary" style="width: 100%; text-align: left; padding: 0.75rem 1rem; font-size: 1.125rem; font-weight: 600;" value="10000" min="1">
+      </div>
+
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">GST Rate Slab</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="gst-rate-pills">
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="0"> 0%
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="5"> 5%
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="12"> 12%
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="18" checked> 18%
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="28"> 28%
+          </label>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Calculation Mode</label>
+        <div style="display: flex; gap: 0.75rem;">
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-type" value="add" checked> Add GST (Exclusive)
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-type" value="remove"> Remove GST (Inclusive)
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Panel -->
+    <div style="background-color: var(--bg-subtle); border: 1px solid var(--border-subtle); padding: 1.75rem; border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: 1.25rem;">
+      <div>
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.25rem;">Total Gross Amount</div>
+        <div id="gst-result-total" style="font-size: 2.25rem; font-weight: 800; color: var(--primary); line-height: 1.2;">₹ 11,800.00</div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem; display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.9375rem; color: var(--text-secondary);">Net / Base Amount:</span>
+        <span id="gst-result-net" style="font-size: 1.125rem; font-weight: 700;">₹ 10,000.00</span>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.9375rem; color: var(--text-secondary);">Total GST Tax:</span>
+        <span id="gst-result-tax" style="font-size: 1.125rem; font-weight: 700; color: var(--accent);">₹ 1,800.00</span>
+      </div>
+
+      <div style="background: var(--bg-surface); padding: 0.875rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); font-size: 0.875rem; display: flex; justify-content: space-around; text-align: center;">
+        <div>
+          <div style="color: var(--text-muted); font-size: 0.75rem;">CGST (50%)</div>
+          <div id="gst-result-cgst" style="font-weight: 700; color: var(--text-primary);">₹ 900.00</div>
+        </div>
+        <div style="border-right: 1px solid var(--border-subtle);"></div>
+        <div>
+          <div style="color: var(--text-muted); font-size: 0.75rem;">SGST (50%)</div>
+          <div id="gst-result-sgst" style="font-weight: 700; color: var(--text-primary);">₹ 900.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>

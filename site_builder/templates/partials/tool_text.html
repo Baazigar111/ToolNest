@@ -1,0 +1,86 @@
+<div class="tool-workspace" id="text-tool-app" data-tool-slug="{{ tool.slug }}">
+  {% if tool.slug == 'word-counter' %}
+  <!-- Word Counter Metrics Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+    <div style="background-color: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border-subtle);">
+      <div id="stat-words" style="font-size: 1.875rem; font-weight: 800; color: var(--primary);">0</div>
+      <div style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Words</div>
+    </div>
+    <div style="background-color: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border-subtle);">
+      <div id="stat-chars" style="font-size: 1.875rem; font-weight: 800; color: var(--primary);">0</div>
+      <div style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Characters</div>
+    </div>
+    <div style="background-color: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border-subtle);">
+      <div id="stat-chars-no-spaces" style="font-size: 1.875rem; font-weight: 800; color: var(--text-primary);">0</div>
+      <div style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Chars (No Space)</div>
+    </div>
+    <div style="background-color: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border-subtle);">
+      <div id="stat-sentences" style="font-size: 1.875rem; font-weight: 800; color: var(--primary);">0</div>
+      <div style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Sentences</div>
+    </div>
+    <div style="background-color: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border-subtle);">
+      <div id="stat-paragraphs" style="font-size: 1.875rem; font-weight: 800; color: var(--text-primary);">0</div>
+      <div style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Paragraphs</div>
+    </div>
+    <div style="background-color: var(--bg-subtle); padding: 1rem; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border-subtle);">
+      <div id="stat-reading-time" style="font-size: 1.875rem; font-weight: 800; color: var(--accent);">0m</div>
+      <div style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Reading Time</div>
+    </div>
+  </div>
+
+  <textarea id="word-input" class="btn btn-secondary" style="width: 100%; min-height: 240px; text-align: left; resize: vertical; padding: 1.25rem; font-size: 1rem; line-height: 1.6; border-radius: var(--radius-md); background-color: var(--bg-surface); cursor: text;" placeholder="Start typing or paste your text here to count words, characters, sentences, and estimated reading time in real time..."></textarea>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+    <div style="font-size: 0.875rem; color: var(--text-muted);">
+      Estimated Speaking Time: <strong id="stat-speaking-time" style="color: var(--text-primary);">0m</strong>
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <button type="button" class="btn btn-secondary" id="btn-clear-words">Clear</button>
+      <button type="button" class="btn btn-primary copy-btn" data-copy-target="#word-input">Copy Text</button>
+    </div>
+  </div>
+
+  {% elif tool.slug == 'case-converter' %}
+  <!-- Case Converter Workspace -->
+  <textarea id="case-input" class="btn btn-secondary" style="width: 100%; min-height: 200px; text-align: left; resize: vertical; padding: 1.25rem; font-size: 1rem; line-height: 1.6; margin-bottom: 1rem; border-radius: var(--radius-md); background-color: var(--bg-surface); cursor: text;" placeholder="Type or paste your text here to convert across various cases instantly..."></textarea>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; font-size: 0.875rem; color: var(--text-muted);">
+    <span>Character count: <strong id="case-char-count" style="color: var(--text-primary);">0</strong> | Words: <strong id="case-word-count" style="color: var(--text-primary);">0</strong></span>
+    <span style="color: var(--success); font-weight: 500;">✓ 100% Client-Side Private</span>
+  </div>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 0.625rem; margin-bottom: 1.25rem;">
+    <button type="button" class="btn btn-secondary" id="btn-uppercase">UPPERCASE</button>
+    <button type="button" class="btn btn-secondary" id="btn-lowercase">lowercase</button>
+    <button type="button" class="btn btn-secondary" id="btn-titlecase">Title Case</button>
+    <button type="button" class="btn btn-secondary" id="btn-sentencecase">Sentence case</button>
+    <button type="button" class="btn btn-secondary" id="btn-camelcase">camelCase</button>
+    <button type="button" class="btn btn-secondary" id="btn-snakecase">snake_case</button>
+    <button type="button" class="btn btn-secondary" id="btn-kebabcase">kebab-case</button>
+  </div>
+
+  <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+    <button type="button" class="btn btn-secondary" id="btn-clear-case">Clear</button>
+    <button type="button" class="btn btn-primary copy-btn" data-copy-target="#case-input">Copy Text</button>
+  </div>
+
+  {% elif tool.slug == 'json-formatter' %}
+  <!-- JSON Formatter & Validator Workspace -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.875rem; flex-wrap: wrap; gap: 0.75rem;">
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+      <button type="button" class="btn btn-secondary" id="btn-json-2space">Format (2 Spaces)</button>
+      <button type="button" class="btn btn-secondary" id="btn-json-4space">Format (4 Spaces)</button>
+      <button type="button" class="btn btn-secondary" id="btn-json-minify">Minify</button>
+      <button type="button" class="btn btn-secondary" id="btn-json-sample">Load Sample</button>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+      <button type="button" class="btn btn-secondary" id="btn-json-clear">Clear</button>
+      <button type="button" class="btn btn-primary copy-btn" data-copy-target="#json-input">Copy JSON</button>
+    </div>
+  </div>
+
+  <textarea id="json-input" class="btn btn-secondary" style="width: 100%; min-height: 300px; text-align: left; resize: vertical; padding: 1.25rem; font-family: var(--font-mono); font-size: 0.9375rem; line-height: 1.5; border-radius: var(--radius-md); background-color: var(--bg-surface); cursor: text;" placeholder='{"name": "ToolNest", "tools": 15, "free": true}'></textarea>
+
+  <div id="json-status-banner" style="display: none; margin-top: 1rem; padding: 0.875rem 1.25rem; border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500;"></div>
+  {% endif %}
+</div>

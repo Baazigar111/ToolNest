@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section">
+  <h1 class="hero-title">
+    Free Everyday Tools for <br>
+    <span class="hero-title-highlight">PDFs, Images & Finance</span>
+  </h1>
+  <p class="hero-subtitle">
+    Fast, private online tools that work instantly in your browser. No registration, no watermarks, and files are deleted right after processing.
+  </p>
+
+  <div class="hero-badges">
+    <span class="badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      100% Free
+    </span>
+    <span class="badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      No Sign-Up Needed
+    </span>
+    <span class="badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Files Never Retained
+    </span>
+    <span class="badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+      Mobile First
+    </span>
+  </div>
+</section>
+
+{% for cat in categories %}
+<section class="category-block" id="{{ cat.slug }}">
+  <h2 class="category-title">
+    <span>{{ cat.name }}</span>
+  </h2>
+  <div class="tool-grid">
+    {% for tool in cat.tools %}
+    {% if tool.is_active %}
+    <a href="/{{ tool.slug }}" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            {% if tool.tool_type == 'pdf' %}
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+            {% elif tool.tool_type == 'image' %}
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+            {% elif tool.tool_type == 'qr' %}
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            {% elif tool.tool_type == 'calculator' %}
+              <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>
+            {% else %}
+              <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
+            {% endif %}
+          </svg>
+        </div>
+        <div class="tool-card-title">{{ tool.name }}</div>
+      </div>
+      <p class="tool-card-desc">{{ tool.description }}</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+
+<section class="content-section" style="text-align: center; margin-top: 4rem;">
+  <h2 class="section-h2">Why Choose ToolNest?</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; text-align: left; margin-top: 1.5rem;">
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-md);">
+      <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">Privacy by Default</h3>
+      <p style="font-size: 0.9375rem; color: var(--text-secondary);">Your documents and photos are processed in memory and deleted instantly. We never log filenames or contents.</p>
+    </div>
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-md);">
+      <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">Zero Latency Static Site</h3>
+      <p style="font-size: 0.9375rem; color: var(--text-secondary);">Hosted on Cloudflare's global edge network for sub-second page loads anywhere in the world.</p>
+    </div>
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-md);">
+      <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">Engineered for India</h3>
+      <p style="font-size: 0.9375rem; color: var(--text-secondary);">UPI payment QR codes, updated India GST 2.0 slabs, and Indian number formatting in lakhs and crores.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

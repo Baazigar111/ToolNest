@@ -1,0 +1,84 @@
+<div class="tool-workspace" id="upload-tool-app" data-endpoint="{{ tool.endpoint }}">
+  <div class="dropzone-container" id="dropzone" tabindex="0" role="button" aria-label="Upload files">
+    <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="17 8 12 3 7 8"/>
+      <line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+    <div class="dropzone-title">Click to choose or drag & drop files here</div>
+    <div class="dropzone-subtitle" id="file-limit-hint">
+      {% if tool.tool_type == 'pdf' %}
+        Supports PDF files up to 10 MB (max 5 files)
+      {% else %}
+        Supports JPG, PNG, and WebP images up to 5 MB (max 5 files)
+      {% endif %}
+    </div>
+    <input
+      type="file"
+      id="file-input"
+      class="file-input-hidden"
+      {% if tool.slug == 'merge-pdf' or tool.slug == 'image-to-pdf' %}multiple{% endif %}
+      accept="{% if tool.tool_type == 'pdf' %}.pdf,application/pdf{% else %}image/jpeg,image/png,image/webp{% endif %}"
+    >
+  </div>
+
+  <div id="file-list-container" style="display: none; margin-top: 1.5rem;">
+    <h3 style="font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.5rem;">Selected Files:</h3>
+    <ul id="selected-files-list" style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;"></ul>
+  </div>
+
+  <!-- Dynamic Tool Specific Options -->
+  {% if tool.slug == 'compress-pdf' %}
+  <div class="tool-options" style="margin-top: 1.5rem;">
+    <label style="font-size: 0.875rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Compression Level:</label>
+    <div style="display: flex; gap: 0.75rem;">
+      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="low" checked> Low (Highest Quality)</label>
+      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="medium"> Medium (Balanced)</label>
+      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="high"> High (Smallest Size)</label>
+    </div>
+  </div>
+  {% elif tool.slug == 'split-pdf' %}
+  <div class="tool-options" style="margin-top: 1.5rem;">
+    <label style="font-size: 0.875rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Split Mode:</label>
+    <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
+      <label class="badge" style="cursor: pointer;"><input type="radio" name="split-mode" value="ranges" checked> Specific Ranges</label>
+      <label class="badge" style="cursor: pointer;"><input type="radio" name="split-mode" value="all"> Extract All Pages</label>
+    </div>
+    <input type="text" id="split-range-input" class="btn btn-secondary" style="width: 100%; text-align: left;" placeholder="e.g. 1-3, 5, 7-9">
+  </div>
+  {% elif tool.slug == 'convert-image' %}
+  <div class="tool-options" style="margin-top: 1.5rem;">
+    <label style="font-size: 0.875rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Target Format:</label>
+    <select id="image-target-format" class="btn btn-secondary" style="width: 100%; text-align: left;">
+      <option value="PNG">PNG (Preserves Transparency)</option>
+      <option value="JPEG">JPG / JPEG (Smallest Size)</option>
+      <option value="WEBP">WebP (Modern Web Format)</option>
+    </select>
+  </div>
+  {% endif %}
+
+  <div class="progress-container" id="upload-progress">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-text">
+      <span id="progress-status">Processing...</span>
+      <span id="progress-percentage">0%</span>
+    </div>
+  </div>
+
+  <div id="error-message-box" style="display: none; margin-top: 1.25rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background-color: var(--danger-bg); color: var(--danger); font-size: 0.9375rem;"></div>
+
+  <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+    <button type="button" id="start-process-btn" class="btn btn-primary btn-block server-tool-btn" disabled>
+      {{ tool.name }}
+    </button>
+  </div>
+
+  <div class="privacy-notice">
+    <svg class="privacy-notice-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    <span>Files are processed securely in memory and deleted immediately after processing.</span>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
+  <url>
+    <loc>{{ site_url }}/</loc>
+    <lastmod>{{ build_date }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Tool Pages -->
+  {% for tool in tools %}
+  {% if tool.is_active %}
+  <url>
+    <loc>{{ site_url }}/{{ tool.slug }}</loc>
+    <lastmod>{{ build_date }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  {% endif %}
+  {% endfor %}
+
+  <!-- Category Pages -->
+  {% for cat in categories %}
+  {% if cat.is_active %}
+  <url>
+    <loc>{{ site_url }}/category/{{ cat.slug }}</loc>
+    <lastmod>{{ build_date }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  {% endif %}
+  {% endfor %}
+
+  <!-- Blog / Guides -->
+  <url>
+    <loc>{{ site_url }}/blog</loc>
+    <lastmod>{{ build_date }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {% for post in posts %}
+  {% if post.status == 'published' %}
+  <url>
+    <loc>{{ site_url }}/blog/{{ post.slug }}</loc>
+    <lastmod>{{ post.published_at.strftime('%Y-%m-%d') if post.published_at else build_date }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {% endif %}
+  {% endfor %}
+
+  <!-- Supporting & Legal Pages -->
+  <url>
+    <loc>{{ site_url }}/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>{{ site_url }}/privacy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>{{ site_url }}/terms</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>{{ site_url }}/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>

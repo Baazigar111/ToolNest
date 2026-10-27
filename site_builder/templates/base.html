@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ seo_title | default("ToolNest — Free Online Tools") }}</title>
+  <meta name="description" content="{{ meta_description | default('Free everyday PDF tools, image compressors, QR generators, and finance calculators.') }}">
+  <link rel="canonical" href="{{ site_url | default('') }}{{ canonical_path | default('/') }}">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ seo_title | default('ToolNest — Free Online Tools') }}">
+  <meta property="og:description" content="{{ meta_description | default('Free online tools for everyday productivity.') }}">
+  <meta property="og:url" content="{{ site_url | default('') }}{{ canonical_path | default('/') }}">
+  <meta property="og:site_name" content="ToolNest">
+  <meta property="og:type" content="{{ og_type | default('website') }}">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Structured Data (JSON-LD) -->
+  {% block structured_data %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ToolNest",
+    "url": "{{ site_url | default('') }}"
+  }
+  </script>
+  {% endblock %}
+
+  <!-- Global API Client Config -->
+  <script>
+    window.TOOLNEST_CONFIG = {
+      apiBaseUrl: "{{ api_base_url | default('http://localhost:8000') }}"
+    };
+  </script>
+</head>
+<body>
+  {% include 'partials/header.html' %}
+
+  <main class="main-content">
+    <div class="container">
+      {% with slot_position="top" %}{% include 'partials/ad_slot.html' %}{% endwith %}
+
+      {% block content %}{% endblock %}
+
+      {% with slot_position="bottom" %}{% include 'partials/ad_slot.html' %}{% endwith %}
+    </div>
+  </main>
+
+  {% include 'partials/footer.html' %}
+
+  <!-- Core Scripts -->
+  <script src="/assets/js/theme.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/tools.js"></script>
+  <script src="/assets/js/main.js"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
