@@ -79,8 +79,10 @@
 </header>
 
 <!-- Tool Interactive Workspace -->
-{% if tool.tool_type in ['pdf', 'image', 'qr'] %}
+{% if tool.tool_type in ['pdf', 'image'] %}
   {% include 'partials/tool_upload.html' %}
+{% elif tool.tool_type == 'qr' %}
+  {% include 'partials/tool_qr.html' %}
 {% elif tool.tool_type == 'calculator' %}
   {% include 'partials/tool_calculator.html' %}
 {% else %}

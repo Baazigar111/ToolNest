@@ -449,6 +449,133 @@ function initGstCalculator() {
 }
 
 // -------------------------------------------------------------
+// 7. QR Code Generator
+// -------------------------------------------------------------
+function initQRCodeGenerator() {
+  const qrApp = document.getElementById('qr-tool-app');
+  if (!qrApp) return;
+
+  const dataInput = document.getElementById('qr-data-input');
+  const formatSelect = document.getElementById('qr-format');
+  const boxSizeSelect = document.getElementById('qr-box-size');
+  const fillColorInput = document.getElementById('qr-fill-color');
+  const fillColorVal = document.getElementById('qr-fill-color-val');
+  const backColorInput = document.getElementById('qr-back-color');
+  const backColorVal = document.getElementById('qr-back-color-val');
+  const btnGenerate = document.getElementById('btn-generate-qr');
+  const errorBox = document.getElementById('qr-error-box');
+  const resultSection = document.getElementById('qr-result-section');
+  const outputImg = document.getElementById('qr-output-img');
+  const downloadLink = document.getElementById('qr-download-link');
+
+  // Preset buttons
+  document.querySelectorAll('.qr-preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const preset = btn.getAttribute('data-preset');
+      if (dataInput && preset) {
+        dataInput.value = preset;
+        dataInput.focus();
+        generateQR();
+      }
+    });
+  });
+
+  // Color display sync
+  if (fillColorInput && fillColorVal) {
+    fillColorInput.addEventListener('input', () => {
+      fillColorVal.textContent = fillColorInput.value;
+    });
+  }
+  if (backColorInput && backColorVal) {
+    backColorInput.addEventListener('input', () => {
+      backColorVal.textContent = backColorInput.value;
+    });
+  }
+
+  function showError(msg) {
+    if (!errorBox) return;
+    errorBox.textContent = msg;
+    errorBox.style.display = 'block';
+  }
+
+  function clearError() {
+    if (errorBox) {
+      errorBox.textContent = '';
+      errorBox.style.display = 'none';
+    }
+  }
+
+  let currentBlobUrl = null;
+
+  async function generateQR() {
+    clearError();
+    const text = (dataInput ? dataInput.value : '').trim();
+    if (!text) {
+      showError('Please enter some text, a URL, or a payment ID to generate a QR code.');
+      return;
+    }
+
+    if (btnGenerate) {
+      btnGenerate.setAttribute('disabled', 'disabled');
+      btnGenerate.textContent = 'Generating...';
+    }
+
+    const payload = {
+      data: text,
+      format: formatSelect ? formatSelect.value : 'png',
+      box_size: boxSizeSelect ? parseInt(boxSizeSelect.value, 10) : 10,
+      border: 4,
+      error_correction: 'M',
+      fill_color: fillColorInput ? fillColorInput.value : '#000000',
+      back_color: backColorInput ? backColorInput.value : '#FFFFFF',
+    };
+
+    try {
+      const blob = await ToolNestAPI.request('/api/qr', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (currentBlobUrl) {
+        URL.revokeObjectURL(currentBlobUrl);
+      }
+      currentBlobUrl = URL.createObjectURL(blob);
+
+      if (outputImg) {
+        outputImg.src = currentBlobUrl;
+      }
+
+      if (downloadLink) {
+        downloadLink.href = currentBlobUrl;
+        const ext = payload.format.toLowerCase() === 'svg' ? 'svg' : 'png';
+        downloadLink.download = `toolnest_qrcode.${ext}`;
+      }
+
+      if (resultSection) {
+        resultSection.style.display = 'block';
+      }
+    } catch (err) {
+      showError(err.message || 'Failed to generate QR code. Please try again.');
+    } finally {
+      if (btnGenerate) {
+        btnGenerate.removeAttribute('disabled');
+        btnGenerate.textContent = 'Generate QR Code';
+      }
+    }
+  }
+
+  if (btnGenerate) {
+    btnGenerate.addEventListener('click', generateQR);
+  }
+
+  // Generate initial QR code on page load
+  generateQR();
+}
+
+// -------------------------------------------------------------
 // Global Initialization on DOM Ready
 // -------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
@@ -458,4 +585,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initEmiCalculator();
   initSipCalculator();
   initGstCalculator();
+  initQRCodeGenerator();
 });
