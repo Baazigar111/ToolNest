@@ -4,9 +4,10 @@ from fastapi import APIRouter, Depends, File, Form, Response, UploadFile
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.errors import ToolDisabledError
+from app.errors import ToolDisabledError, ToolNestError
 from app.services.file_validator import FileValidator
 from app.services.image_service import ImageService
+from app.services.pdf_service import PDFService
 from app.services.tool_service import ToolService
 from app.services.usage_service import UsageService
 
@@ -152,3 +153,47 @@ async def crop_image(
     finally:
         if tool:
             UsageService.record_usage(tool.id, is_error=is_error, bytes_count=content_len)
+
+
+@router.post("/to-pdf", summary="Convert Images to PDF")
+@router.post("/from-images", summary="Convert Images to PDF")
+async def images_to_pdf(
+    files: list[UploadFile] = File(default=[]),
+    file: UploadFile | None = File(default=None),
+    session: Session = Depends(get_db),
+) -> Response:
+    """Convert up to 5 uploaded images into a single clean PDF document."""
+    tool = ToolService.get_tool_by_slug("image-to-pdf", session) or ToolService.get_tool_by_slug("images-to-pdf", session)
+    if tool and not tool.is_active:
+        raise ToolDisabledError()
+
+    upload_list = [f for f in files if f.filename]
+    if file and file.filename:
+        upload_list.append(file)
+    if not upload_list:
+        raise ToolNestError("Please select at least one image file.")
+
+    FileValidator.validate_file_count(upload_list, min_files=1)
+    is_error = False
+    total_bytes = 0
+    image_buffers: list[bytes] = []
+
+    try:
+        for f in upload_list:
+            img_bytes, _ = await FileValidator.read_and_validate_image(f)
+            total_bytes += len(img_bytes)
+            image_buffers.append(img_bytes)
+
+        pdf_bytes = PDFService.images_to_pdf(image_buffers)
+        return Response(
+            content=pdf_bytes,
+            media_type="application/pdf",
+            headers={"Content-Disposition": 'attachment; filename="images_combined.pdf"'},
+        )
+    except Exception:
+        is_error = True
+        raise
+    finally:
+        if tool:
+            UsageService.record_usage(tool.id, is_error=is_error, bytes_count=total_bytes)
+

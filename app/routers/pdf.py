@@ -109,6 +109,7 @@ async def compress_pdf(
 
 
 @router.post("/to-images", summary="Convert PDF Pages to Images")
+@router.post("/to-image", summary="Convert PDF Pages to Images")
 async def pdf_to_images(
     file: UploadFile = File(...),
     format: str = Form("png"),
@@ -116,7 +117,7 @@ async def pdf_to_images(
     session: Session = Depends(get_db),
 ) -> Response:
     """Convert PDF pages into high-resolution PNG or JPEG images (ZIP archive for multi-page)."""
-    tool = ToolService.get_tool_by_slug("pdf-to-images", session)
+    tool = ToolService.get_tool_by_slug("pdf-to-images", session) or ToolService.get_tool_by_slug("pdf-to-image", session)
     if tool and not tool.is_active:
         raise ToolDisabledError()
 
@@ -140,6 +141,7 @@ async def pdf_to_images(
 
 
 @router.post("/from-images", summary="Convert Images to PDF")
+@router.post("/to-pdf", summary="Convert Images to PDF")
 async def images_to_pdf(
     files: list[UploadFile] = File(...),
     session: Session = Depends(get_db),

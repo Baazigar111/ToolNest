@@ -23,6 +23,7 @@ class QRCodeRequest(BaseModel):
     format: str = Field(default="png", pattern="^(?i)(png|svg)$", description="Output format (png or svg)")
 
 
+@router.post("", summary="Generate QR Code Image")
 @router.post("/generate", summary="Generate QR Code Image")
 def generate_qr_code(
     payload: QRCodeRequest,
