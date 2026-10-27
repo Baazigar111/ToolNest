@@ -2,9 +2,15 @@
 
 import os
 import shutil
+import sys
 from datetime import date, datetime
 from pathlib import Path
 from typing import Any
+
+# Ensure repository root is on sys.path
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from sqlalchemy import select
