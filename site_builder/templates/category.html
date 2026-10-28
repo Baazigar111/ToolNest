@@ -1,6 +1,38 @@
 {% extends "base.html" %}
 
+{% block structured_data %}
+<!-- BreadcrumbList Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ site_url }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "{{ category.name }}",
+      "item": "{{ site_url }}/{{ category.slug }}"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
+<nav class="breadcrumb-nav" aria-label="Breadcrumb">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+    <li class="breadcrumb-separator" aria-hidden="true">&rsaquo;</li>
+    <li class="breadcrumb-item breadcrumb-current" aria-current="page">{{ category.name }}</li>
+  </ol>
+</nav>
+
 <header class="tool-page-header">
   <h1 class="tool-page-h1">{{ category.name }}</h1>
   <p class="tool-page-intro">{{ category.description }}</p>

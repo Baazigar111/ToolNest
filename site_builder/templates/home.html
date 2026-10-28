@@ -32,9 +32,15 @@
 
 {% for cat in categories %}
 <section class="category-block" id="{{ cat.slug }}">
-  <h2 class="category-title">
-    <span>{{ cat.name }}</span>
-  </h2>
+  <div class="category-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem;">
+    <h2 class="category-title" style="margin-bottom: 0;">
+      <a href="/{{ cat.slug }}" style="color: inherit; text-decoration: none;">{{ cat.name }}</a>
+    </h2>
+    <a href="/{{ cat.slug }}" class="category-view-all" style="font-size: 0.875rem; color: var(--primary); font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; text-decoration: none;">
+      <span>View All</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
   <div class="tool-grid">
     {% for tool in cat.tools %}
     {% if tool.is_active %}

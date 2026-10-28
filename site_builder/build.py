@@ -54,18 +54,67 @@ class SiteBuilder:
         posts: list[BlogPost] = []
 
         if self.session is not None:
-            categories = list(self.session.scalars(select(Category).order_by(Category.sort_order)).all())
-            tools = list(self.session.scalars(select(Tool).where(Tool.is_active.is_(True)).order_by(Tool.name)).all())
-            posts = list(self.session.scalars(select(BlogPost).where(BlogPost.status == "published").order_by(BlogPost.published_at.desc())).all())
+            try:
+                categories = list(self.session.scalars(select(Category).order_by(Category.sort_order)).all())
+                tools = list(self.session.scalars(select(Tool).where(Tool.is_active.is_(True)).order_by(Tool.name)).all())
+                posts = list(self.session.scalars(select(BlogPost).where(BlogPost.status == "published").order_by(BlogPost.published_at.desc())).all())
 
-            # Read site settings overrides
-            ads_setting = self.session.scalar(select(SiteSetting).where(SiteSetting.key == "ads_enabled"))
-            if ads_setting:
-                ads_enabled = bool(ads_setting.value)
+                # Read site settings overrides
+                ads_setting = self.session.scalar(select(SiteSetting).where(SiteSetting.key == "ads_enabled"))
+                if ads_setting:
+                    ads_enabled = bool(ads_setting.value)
 
-            gst_setting = self.session.scalar(select(SiteSetting).where(SiteSetting.key == "gst_rates"))
-            if gst_setting and isinstance(gst_setting.value, list):
-                gst_rates = gst_setting.value
+                gst_setting = self.session.scalar(select(SiteSetting).where(SiteSetting.key == "gst_rates"))
+                if gst_setting and isinstance(gst_setting.value, list):
+                    gst_rates = gst_setting.value
+            except Exception as e:
+                print(f"Notice: Database query skipped ({e}). Using offline seed catalog.", file=sys.stderr)
+                categories = []
+                tools = []
+                posts = []
+
+        # Fallback to seeded catalog when building offline or without database
+        if not categories:
+            try:
+                import uuid
+
+                from scripts.seed_tools import CATEGORIES as SEED_CATS
+                from scripts.seed_tools import TOOLS as SEED_TOOLS
+                category_map = {}
+                for c_data in SEED_CATS:
+                    cat = Category(
+                        id=uuid.uuid4(),
+                        slug=c_data["slug"],
+                        name=c_data["name"],
+                        description=c_data["description"],
+                        sort_order=c_data["sort_order"],
+                        is_active=True,
+                    )
+                    cat.tools = []
+                    categories.append(cat)
+                    category_map[cat.slug] = cat
+                for t_data in SEED_TOOLS:
+                    cat = category_map.get(t_data["category_slug"])
+                    t = Tool(
+                        id=uuid.uuid4(),
+                        slug=t_data["slug"],
+                        name=t_data["name"],
+                        category_id=cat.id if cat else None,
+                        category=cat,
+                        tool_type=t_data["tool_type"],
+                        endpoint=t_data["endpoint"],
+                        description=t_data["description"],
+                        seo_title=t_data["seo_title"],
+                        meta_description=t_data["meta_description"],
+                        canonical_path=t_data["canonical_path"],
+                        how_to_steps=t_data["how_to_steps"],
+                        is_active=True,
+                    )
+                    tools.append(t)
+                    if cat:
+                        cat.tools.append(t)
+            except Exception as e:
+                print(f"Warning: could not load fallback seed data: {e}", file=sys.stderr)
 
         return {
             "site_url": site_url,
@@ -135,7 +184,7 @@ class SiteBuilder:
             )
             generated_files.append(self._write_file(f"{tool.slug}/index.html", tool_html))
 
-        # 5. Render Category Pages (/category/{slug}/index.html)
+        # 5. Render Category Pages (Clean URLs: /{slug}/index.html & legacy alias /category/{slug}/index.html)
         cat_tpl = self.env.get_template("category.html")
         for cat in context["categories"]:
             cat_html = cat_tpl.render(
@@ -144,8 +193,11 @@ class SiteBuilder:
                 current_category=cat,
                 seo_title=f"{cat.name} — Free Online Tools - ToolNest",
                 meta_description=f"Free online tools for {cat.name.lower()}. {cat.description or ''}",
-                canonical_path=f"/category/{cat.slug}",
+                canonical_path=f"/{cat.slug}",
             )
+            # Primary clean URL: /{slug}/index.html (e.g., /pdf -> dist/pdf/index.html)
+            generated_files.append(self._write_file(f"{cat.slug}/index.html", cat_html))
+            # Legacy alias URL for backward compatibility (e.g., /category/pdf -> dist/category/pdf/index.html)
             generated_files.append(self._write_file(f"category/{cat.slug}/index.html", cat_html))
 
         # 6. Render Blog Index & Article Pages
@@ -191,6 +243,27 @@ class SiteBuilder:
         robots_tpl = self.env.get_template("robots.txt")
         robots_txt = robots_tpl.render(**context)
         generated_files.append(self._write_file("robots.txt", robots_txt))
+
+        # 9. Render Cloudflare Pages _redirects and _headers
+        redirects_content = (
+            "# ToolNest Clean URL 301 Permanent Redirects\n"
+            "/category/:slug  /:slug  301\n"
+            "/tools/:slug     /:slug  301\n"
+            "/tool/:slug      /:slug  301\n"
+        )
+        generated_files.append(self._write_file("_redirects", redirects_content))
+
+        headers_content = (
+            "# Cloudflare Pages Security & Cache Headers\n"
+            "/assets/*\n"
+            "  Cache-Control: public, max-age=31536000, immutable\n"
+            "\n"
+            "/*\n"
+            "  X-Content-Type-Options: nosniff\n"
+            "  X-Frame-Options: SAMEORIGIN\n"
+            "  Referrer-Policy: strict-origin-when-cross-origin\n"
+        )
+        generated_files.append(self._write_file("_headers", headers_content))
 
         return generated_files
 

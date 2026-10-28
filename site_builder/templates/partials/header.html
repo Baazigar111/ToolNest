@@ -11,9 +11,10 @@
 
     <nav class="site-nav" aria-label="Main Navigation">
       <a href="/" class="nav-link {% if page_type == 'home' %}active{% endif %}">Home</a>
-      <a href="/category/pdf" class="nav-link {% if current_category and current_category.slug == 'pdf' %}active{% endif %}">PDF</a>
-      <a href="/category/image" class="nav-link {% if current_category and current_category.slug == 'image' %}active{% endif %}">Image</a>
-      <a href="/category/finance" class="nav-link {% if current_category and current_category.slug == 'finance' %}active{% endif %}">Finance</a>
+      <a href="/pdf" class="nav-link {% if current_category and current_category.slug == 'pdf' %}active{% endif %}">PDF</a>
+      <a href="/image" class="nav-link {% if current_category and current_category.slug == 'image' %}active{% endif %}">Image</a>
+      <a href="/qr" class="nav-link {% if current_category and current_category.slug == 'qr' %}active{% endif %}">QR</a>
+      <a href="/finance" class="nav-link {% if current_category and current_category.slug == 'finance' %}active{% endif %}">Finance</a>
       <a href="/blog" class="nav-link {% if page_type == 'blog' %}active{% endif %}">Guides</a>
     </nav>
 

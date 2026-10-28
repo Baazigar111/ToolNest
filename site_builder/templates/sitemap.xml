@@ -24,7 +24,7 @@
   {% for cat in categories %}
   {% if cat.is_active %}
   <url>
-    <loc>{{ site_url }}/category/{{ cat.slug }}</loc>
+    <loc>{{ site_url }}/{{ cat.slug }}</loc>
     <lastmod>{{ build_date }}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

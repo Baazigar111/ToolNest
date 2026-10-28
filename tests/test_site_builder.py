@@ -1,4 +1,4 @@
-"""Tests for static site generation with Jinja2."""
+"""Tests for Jinja2 static site generation and template rendering."""
 
 import tempfile
 from pathlib import Path
@@ -23,9 +23,9 @@ def test_site_builder_renders_all_pages(db_session: Session):
         category_id=cat.id,
         tool_type="pdf",
         endpoint="/api/pdf/merge",
-        description="Merge multiple PDFs into one.",
-        how_to_steps=["Upload files", "Reorder", "Merge", "Download"],
+        description="Merge multiple PDFs into one document.",
         is_active=True,
+        how_to_steps=["Select files", "Reorder", "Merge", "Download"],
     )
     tool2 = Tool(
         name="Compress PDF",
@@ -33,8 +33,7 @@ def test_site_builder_renders_all_pages(db_session: Session):
         category_id=cat.id,
         tool_type="pdf",
         endpoint="/api/pdf/compress",
-        description="Compress PDF to smaller size.",
-        how_to_steps=["Upload PDF", "Select level", "Compress", "Download"],
+        description="Compress PDF to reduce file size.",
         is_active=True,
     )
     db_session.add_all([tool1, tool2])
@@ -49,7 +48,10 @@ def test_site_builder_renders_all_pages(db_session: Session):
         assert (out_path / "index.html").exists()
         assert (out_path / "merge-pdf" / "index.html").exists()
         assert (out_path / "compress-pdf" / "index.html").exists()
+        assert (out_path / "pdf" / "index.html").exists()
         assert (out_path / "category" / "pdf" / "index.html").exists()
+        assert (out_path / "_redirects").exists()
+        assert (out_path / "_headers").exists()
         assert (out_path / "blog" / "index.html").exists()
         assert (out_path / "about" / "index.html").exists()
         assert (out_path / "privacy" / "index.html").exists()
@@ -68,9 +70,15 @@ def test_site_builder_renders_all_pages(db_session: Session):
         assert "How to Use Merge PDF" in tool_content
         assert "SoftwareApplication" in tool_content
         assert '<link rel="canonical"' in tool_content
+        assert 'class="breadcrumb-nav"' in tool_content
+
+        # Check category content structure
+        cat_content = (out_path / "pdf" / "index.html").read_text(encoding="utf-8")
+        assert '<h1 class="tool-page-h1">PDF Tools</h1>' in cat_content
+        assert 'class="breadcrumb-nav"' in cat_content
 
         # Check sitemap content
         sitemap_content = (out_path / "sitemap.xml").read_text(encoding="utf-8")
         assert "/merge-pdf</loc>" in sitemap_content
         assert "/compress-pdf</loc>" in sitemap_content
-        assert "/category/pdf</loc>" in sitemap_content
+        assert "/pdf</loc>" in sitemap_content

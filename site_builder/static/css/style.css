@@ -362,6 +362,50 @@ button, input, select, textarea {
   gap: 0.25rem;
 }
 
+
+/* Breadcrumb Navigation */
+.breadcrumb-nav {
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumb-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.breadcrumb-current {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
 /* Tool Page Specific Layout */
 .tool-page-header {
   text-align: center;
