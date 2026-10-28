@@ -2,6 +2,7 @@
 
 from typing import Any
 
+from fastapi import HTTPException
 from sqladmin import ModelView
 
 from app.models.admin_user import AdminUser
@@ -32,6 +33,15 @@ class AdminUserAdmin(ModelView, model=AdminUser):
     column_searchable_list = [AdminUser.email]
     column_sortable_list = [AdminUser.email, AdminUser.created_at, AdminUser.is_active]
     form_columns = [AdminUser.email, AdminUser.is_active]
+
+    async def on_model_delete(self, model: Any, request: Any) -> None:
+        """Prevent an admin from accidentally deleting their own logged-in account."""
+        current_token = request.session.get("token")
+        if current_token and str(model.id) == current_token:
+            raise HTTPException(
+                status_code=400,
+                detail="You cannot delete your own logged-in admin account.",
+            )
 
 
 class CategoryAdmin(ModelView, model=Category):

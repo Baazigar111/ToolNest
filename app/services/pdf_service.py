@@ -3,7 +3,6 @@
 import io
 import zipfile
 
-import fitz  # PyMuPDF
 import pikepdf
 import pypdf
 from PIL import Image
@@ -156,6 +155,7 @@ class PDFService:
 
         # Second pass: PyMuPDF garbage collection and compression
         try:
+            import pymupdf as fitz
             doc = fitz.open(stream=intermediate_bytes, filetype="pdf")
             final_stream = io.BytesIO()
             doc.save(
@@ -192,6 +192,7 @@ class PDFService:
         media_type = "image/jpeg" if img_ext == "jpg" else "image/png"
 
         try:
+            import pymupdf as fitz
             doc = fitz.open(stream=pdf_content, filetype="pdf")
             total_pages = len(doc)
             if total_pages == 0:

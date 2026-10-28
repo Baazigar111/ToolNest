@@ -1,9 +1,9 @@
 """SQLAdmin application setup and view registration."""
 
-
 from fastapi import FastAPI
 from sqladmin import Admin
 from sqlalchemy import Engine
+from sqlalchemy.orm import sessionmaker
 
 from app.admin.auth import AdminAuth
 from app.admin.views import (
@@ -38,6 +38,9 @@ def setup_admin(
         except Exception:
             # Database is not yet configured, skip admin initialization
             return None
+
+    if session_factory is None and engine is not None:
+        session_factory = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
     auth_backend = AdminAuth(
         secret_key=settings.admin_secret_key,

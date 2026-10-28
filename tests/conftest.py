@@ -17,6 +17,7 @@ def setup_test_env(monkeypatch):
     """Set testing environment variables before tests execute."""
     monkeypatch.setenv("ENVIRONMENT", "testing")
     monkeypatch.setenv("DEBUG", "true")
+    monkeypatch.setenv("DATABASE_URL", "sqlite:///:memory:")
     # Clear cached settings so monkeypatched env applies
     get_settings.cache_clear()
     reset_engine()
@@ -32,6 +33,7 @@ def client(sqlite_engine, monkeypatch):
 
     session_factory = sessionmaker(autocommit=False, autoflush=False, bind=sqlite_engine)
     monkeypatch.setattr("app.admin.setup.get_session_factory", lambda: session_factory)
+    monkeypatch.setattr("app.admin.auth.get_session_factory", lambda: session_factory)
     monkeypatch.setattr("app.db.get_session_factory", lambda: session_factory)
     app = create_app(engine=sqlite_engine)
 
@@ -79,6 +81,7 @@ def admin_client(sqlite_engine, monkeypatch):
 
     session_factory = sessionmaker(autocommit=False, autoflush=False, bind=sqlite_engine)
     monkeypatch.setattr("app.admin.setup.get_session_factory", lambda: session_factory)
+    monkeypatch.setattr("app.admin.auth.get_session_factory", lambda: session_factory)
     monkeypatch.setattr("app.db.get_session_factory", lambda: session_factory)
     app = create_app(engine=sqlite_engine)
 
