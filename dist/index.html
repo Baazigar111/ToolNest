@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolNest — Free Online PDF, Image, Text &amp; Finance Tools</title>
+  <meta name="description" content="Everyday online tools for PDF merging, image compression, QR generation, EMI calculation, and text formatting. Free with no registration.">
+  <link rel="canonical" href="http://localhost:3000/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ToolNest — Free Online PDF, Image, Text &amp; Finance Tools">
+  <meta property="og:description" content="Everyday online tools for PDF merging, image compression, QR generation, EMI calculation, and text formatting. Free with no registration.">
+  <meta property="og:url" content="http://localhost:3000/">
+  <meta property="og:site_name" content="ToolNest">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ToolNest",
+    "url": "http://localhost:3000"
+  }
+  </script>
+
+  <!-- Global API Client Config -->
+  <script>
+    window.TOOLNEST_CONFIG = {
+      apiBaseUrl: "https://toolnest-4w95.onrender.com"
+    };
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="site-brand" aria-label="ToolNest Home">
+      <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="currentColor"/>
+        <path d="M10 22L16 10L22 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12.5 18H19.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span>ToolNest</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main Navigation">
+      <a href="/" class="nav-link active">Home</a>
+      <a href="/pdf" class="nav-link ">PDF</a>
+      <a href="/image" class="nav-link ">Image</a>
+      <a href="/qr" class="nav-link ">QR</a>
+      <a href="/finance" class="nav-link ">Finance</a>
+      <a href="/blog" class="nav-link ">Guides</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle theme">
+        <span class="theme-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+<div id="api-status-banner" class="api-alert-banner" role="status"></div>
+  <main class="main-content">
+    <div class="container">
+<div class="ad-slot-container ad-slot-top" aria-hidden="true" style="display: none;"></div>
+
+<section class="hero-section">
+  <h1 class="hero-title">
+    Free Everyday Tools for <br>
+    <span class="hero-title-highlight">PDFs, Images & Finance</span>
+  </h1>
+  <p class="hero-subtitle">
+    Fast, private online tools that work instantly in your browser. No registration, no watermarks, and files are deleted right after processing.
+  </p>
+
+  <div class="hero-badges">
+    <span class="badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      100% Free
+    </span>
+    <span class="badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      No Sign-Up Needed
+    </span>
+    <span class="badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Files Never Retained
+    </span>
+    <span class="badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+      Mobile First
+    </span>
+  </div>
+</section>
+
+<section class="category-block" id="pdf">
+  <div class="category-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem;">
+    <h2 class="category-title" style="margin-bottom: 0;">
+      <a href="/pdf" style="color: inherit; text-decoration: none;">PDF Tools</a>
+    </h2>
+    <a href="/pdf" class="category-view-all" style="font-size: 0.875rem; color: var(--primary); font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; text-decoration: none;">
+      <span>View All</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+  <div class="tool-grid">
+    <a href="/merge-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Merge PDF</div>
+      </div>
+      <p class="tool-card-desc">Combine multiple PDF files into one single document in seconds.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/merge-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Merge PDF</div>
+      </div>
+      <p class="tool-card-desc">Combine multiple PDF files into one single document in seconds.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/split-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Split PDF</div>
+      </div>
+      <p class="tool-card-desc">Extract specific pages or page ranges from a PDF document.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/split-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Split PDF</div>
+      </div>
+      <p class="tool-card-desc">Extract specific pages or page ranges from a PDF document.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/compress-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Compress PDF</div>
+      </div>
+      <p class="tool-card-desc">Reduce PDF file size while maintaining sharp text and image clarity.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/compress-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Compress PDF</div>
+      </div>
+      <p class="tool-card-desc">Reduce PDF file size while maintaining sharp text and image clarity.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/pdf-to-image" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">PDF to Image</div>
+      </div>
+      <p class="tool-card-desc">Convert PDF pages into high-resolution PNG or JPG images.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/pdf-to-image" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">PDF to Image</div>
+      </div>
+      <p class="tool-card-desc">Convert PDF pages into high-resolution PNG or JPG images.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+  </div>
+</section>
+<section class="category-block" id="image">
+  <div class="category-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem;">
+    <h2 class="category-title" style="margin-bottom: 0;">
+      <a href="/image" style="color: inherit; text-decoration: none;">Image Tools</a>
+    </h2>
+    <a href="/image" class="category-view-all" style="font-size: 0.875rem; color: var(--primary); font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; text-decoration: none;">
+      <span>View All</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+  <div class="tool-grid">
+    <a href="/compress-image" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Compress Image</div>
+      </div>
+      <p class="tool-card-desc">Compress JPG, PNG, and WebP images to custom quality or target KB.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/compress-image" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Compress Image</div>
+      </div>
+      <p class="tool-card-desc">Compress JPG, PNG, and WebP images to custom quality or target KB.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/resize-image" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Resize Image</div>
+      </div>
+      <p class="tool-card-desc">Change image pixel dimensions or percentage while locking aspect ratio.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/resize-image" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Resize Image</div>
+      </div>
+      <p class="tool-card-desc">Change image pixel dimensions or percentage while locking aspect ratio.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/convert-image" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Convert Image</div>
+      </div>
+      <p class="tool-card-desc">Convert images between JPG, PNG, and WebP formats instantly.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/convert-image" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Convert Image</div>
+      </div>
+      <p class="tool-card-desc">Convert images between JPG, PNG, and WebP formats instantly.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/image-to-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Image to PDF</div>
+      </div>
+      <p class="tool-card-desc">Combine 1 to 5 images into a single professional PDF document.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/image-to-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Image to PDF</div>
+      </div>
+      <p class="tool-card-desc">Combine 1 to 5 images into a single professional PDF document.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+  </div>
+</section>
+<section class="category-block" id="qr">
+  <div class="category-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem;">
+    <h2 class="category-title" style="margin-bottom: 0;">
+      <a href="/qr" style="color: inherit; text-decoration: none;">QR Codes</a>
+    </h2>
+    <a href="/qr" class="category-view-all" style="font-size: 0.875rem; color: var(--primary); font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; text-decoration: none;">
+      <span>View All</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+  <div class="tool-grid">
+    <a href="/qr-code-generator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">QR Code Generator</div>
+      </div>
+      <p class="tool-card-desc">Create customizable QR codes for links, Wi-Fi, WhatsApp, and UPI payments.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/qr-code-generator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">QR Code Generator</div>
+      </div>
+      <p class="tool-card-desc">Create customizable QR codes for links, Wi-Fi, WhatsApp, and UPI payments.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+  </div>
+</section>
+<section class="category-block" id="text">
+  <div class="category-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem;">
+    <h2 class="category-title" style="margin-bottom: 0;">
+      <a href="/text" style="color: inherit; text-decoration: none;">Text Utilities</a>
+    </h2>
+    <a href="/text" class="category-view-all" style="font-size: 0.875rem; color: var(--primary); font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; text-decoration: none;">
+      <span>View All</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+  <div class="tool-grid">
+    <a href="/word-counter" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Word Counter</div>
+      </div>
+      <p class="tool-card-desc">Count words, characters, sentences, paragraphs, and reading time in real time.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/word-counter" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Word Counter</div>
+      </div>
+      <p class="tool-card-desc">Count words, characters, sentences, paragraphs, and reading time in real time.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/case-converter" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Case Converter</div>
+      </div>
+      <p class="tool-card-desc">Convert text into UPPERCASE, lowercase, Title Case, camelCase, snake_case, and kebab-case.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/case-converter" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Case Converter</div>
+      </div>
+      <p class="tool-card-desc">Convert text into UPPERCASE, lowercase, Title Case, camelCase, snake_case, and kebab-case.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+  </div>
+</section>
+<section class="category-block" id="developer">
+  <div class="category-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem;">
+    <h2 class="category-title" style="margin-bottom: 0;">
+      <a href="/developer" style="color: inherit; text-decoration: none;">Developer Tools</a>
+    </h2>
+    <a href="/developer" class="category-view-all" style="font-size: 0.875rem; color: var(--primary); font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; text-decoration: none;">
+      <span>View All</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+  <div class="tool-grid">
+    <a href="/json-formatter" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">JSON Formatter &amp; Validator</div>
+      </div>
+      <p class="tool-card-desc">Format, beautify, minify, and validate JSON data securely in your browser.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/json-formatter" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">JSON Formatter &amp; Validator</div>
+      </div>
+      <p class="tool-card-desc">Format, beautify, minify, and validate JSON data securely in your browser.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+  </div>
+</section>
+<section class="category-block" id="finance">
+  <div class="category-header-row" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem;">
+    <h2 class="category-title" style="margin-bottom: 0;">
+      <a href="/finance" style="color: inherit; text-decoration: none;">Financial Calculators</a>
+    </h2>
+    <a href="/finance" class="category-view-all" style="font-size: 0.875rem; color: var(--primary); font-weight: 500; display: inline-flex; align-items: center; gap: 0.25rem; text-decoration: none;">
+      <span>View All</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+  <div class="tool-grid">
+    <a href="/emi-calculator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">EMI Calculator</div>
+      </div>
+      <p class="tool-card-desc">Calculate monthly loan EMI, total interest, and complete month-by-month repayment schedule.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/emi-calculator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">EMI Calculator</div>
+      </div>
+      <p class="tool-card-desc">Calculate monthly loan EMI, total interest, and complete month-by-month repayment schedule.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/sip-calculator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">SIP Calculator</div>
+      </div>
+      <p class="tool-card-desc">Calculate mutual fund SIP investment returns with optional yearly step-up.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/sip-calculator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">SIP Calculator</div>
+      </div>
+      <p class="tool-card-desc">Calculate mutual fund SIP investment returns with optional yearly step-up.</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/gst-calculator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">GST Calculator</div>
+      </div>
+      <p class="tool-card-desc">Calculate inclusive and exclusive GST with India GST 2.0 slabs (0%, 5%, 18%, 40%).</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+    <a href="/gst-calculator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="16" y1="14" x2="16" y2="18"/><path d="M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">GST Calculator</div>
+      </div>
+      <p class="tool-card-desc">Calculate inclusive and exclusive GST with India GST 2.0 slabs (0%, 5%, 18%, 40%).</p>
+      <div class="tool-card-footer">
+        <span>Use Tool</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="content-section" style="text-align: center; margin-top: 4rem;">
+  <h2 class="section-h2">Why Choose ToolNest?</h2>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; text-align: left; margin-top: 1.5rem;">
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-md);">
+      <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">Privacy by Default</h3>
+      <p style="font-size: 0.9375rem; color: var(--text-secondary);">Your documents and photos are processed in memory and deleted instantly. We never log filenames or contents.</p>
+    </div>
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-md);">
+      <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">Zero Latency Static Site</h3>
+      <p style="font-size: 0.9375rem; color: var(--text-secondary);">Hosted on Cloudflare's global edge network for sub-second page loads anywhere in the world.</p>
+    </div>
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-md);">
+      <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 0.5rem;">Engineered for India</h3>
+      <p style="font-size: 0.9375rem; color: var(--text-secondary);">UPI payment QR codes, updated India GST 2.0 slabs, and Indian number formatting in lakhs and crores.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ad-slot-container ad-slot-bottom" aria-hidden="true" style="display: none;"></div>
+    </div>
+  </main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="site-brand" style="margin-bottom: 0.75rem;">
+          <span>ToolNest</span>
+        </div>
+        <p style="font-size: 0.875rem; color: var(--text-muted); max-width: 280px;">
+          Fast, free everyday file and finance tools. No signup required, zero tracking of files or documents.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">PDF & Image Tools</h4>
+        <ul class="footer-links">
+          <li><a href="/merge-pdf" class="footer-link">Merge PDF</a></li>
+          <li><a href="/compress-pdf" class="footer-link">Compress PDF</a></li>
+          <li><a href="/split-pdf" class="footer-link">Split PDF</a></li>
+          <li><a href="/compress-image" class="footer-link">Compress Image</a></li>
+          <li><a href="/convert-image" class="footer-link">Convert Image</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Calculators & Text</h4>
+        <ul class="footer-links">
+          <li><a href="/emi-calculator" class="footer-link">EMI Calculator</a></li>
+          <li><a href="/sip-calculator" class="footer-link">SIP Calculator</a></li>
+          <li><a href="/gst-calculator" class="footer-link">GST Calculator</a></li>
+          <li><a href="/qr-code-generator" class="footer-link">QR Generator</a></li>
+          <li><a href="/word-counter" class="footer-link">Word Counter</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">About & Policies</h4>
+        <ul class="footer-links">
+          <li><a href="/about" class="footer-link">About Us</a></li>
+          <li><a href="/privacy" class="footer-link">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link">Terms of Service</a></li>
+          <li><a href="/contact" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 ToolNest. All rights reserved.</p>
+      <p style="display: flex; gap: 1rem;">
+        <span>Free & Private Online Tools</span>
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Core Scripts -->
+  <script src="/assets/js/theme.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/tools.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

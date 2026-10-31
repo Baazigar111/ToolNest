@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India GST 2.0 Calculator (Add or Remove GST) - ToolNest</title>
+  <meta name="description" content="Accurately add or remove Indian GST with current slabs (0%, 5%, 18%, 40%) and CGST/SGST/IGST breakdown.">
+  <link rel="canonical" href="http://localhost:3000/gst-calculator">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="India GST 2.0 Calculator (Add or Remove GST) - ToolNest">
+  <meta property="og:description" content="Accurately add or remove Indian GST with current slabs (0%, 5%, 18%, 40%) and CGST/SGST/IGST breakdown.">
+  <meta property="og:url" content="http://localhost:3000/gst-calculator">
+  <meta property="og:site_name" content="ToolNest">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Structured Data (JSON-LD) -->
+<!-- SoftwareApplication, BreadcrumbList, and FAQPage Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "GST Calculator",
+      "operatingSystem": "All",
+      "applicationCategory": "UtilitiesApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Accurately add or remove Indian GST with current slabs (0%, 5%, 18%, 40%) and CGST/SGST/IGST breakdown."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "http://localhost:3000/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Financial Calculators",
+          "item": "http://localhost:3000/finance"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "GST Calculator",
+          "item": "http://localhost:3000/gst-calculator"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+  <!-- Global API Client Config -->
+  <script>
+    window.TOOLNEST_CONFIG = {
+      apiBaseUrl: "https://toolnest-4w95.onrender.com"
+    };
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="site-brand" aria-label="ToolNest Home">
+      <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="currentColor"/>
+        <path d="M10 22L16 10L22 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12.5 18H19.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span>ToolNest</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main Navigation">
+      <a href="/" class="nav-link ">Home</a>
+      <a href="/pdf" class="nav-link ">PDF</a>
+      <a href="/image" class="nav-link ">Image</a>
+      <a href="/qr" class="nav-link ">QR</a>
+      <a href="/finance" class="nav-link ">Finance</a>
+      <a href="/blog" class="nav-link ">Guides</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle theme">
+        <span class="theme-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+<div id="api-status-banner" class="api-alert-banner" role="status"></div>
+  <main class="main-content">
+    <div class="container">
+<div class="ad-slot-container ad-slot-top" aria-hidden="true" style="display: none;"></div>
+
+<nav class="breadcrumb-nav" aria-label="Breadcrumb">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+    <li class="breadcrumb-separator" aria-hidden="true">&rsaquo;</li>
+    <li class="breadcrumb-item"><a href="/finance" class="breadcrumb-link">Financial Calculators</a></li>
+    <li class="breadcrumb-separator" aria-hidden="true">&rsaquo;</li>
+    <li class="breadcrumb-item breadcrumb-current" aria-current="page">GST Calculator</li>
+  </ol>
+</nav>
+
+<header class="tool-page-header">
+  <h1 class="tool-page-h1">GST Calculator</h1>
+  <p class="tool-page-intro">Calculate inclusive and exclusive GST with India GST 2.0 slabs (0%, 5%, 18%, 40%).</p>
+</header>
+
+<!-- Tool Interactive Workspace -->
+<div class="tool-workspace" id="calculator-app" data-tool-slug="gst-calculator">
+  <!-- GST Calculator Workspace -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; align-items: start;">
+    <div>
+      <div style="margin-bottom: 1.5rem;">
+        <label for="gst-amount" style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Initial Amount (₹)</label>
+        <input type="number" id="gst-amount" class="btn btn-secondary" style="width: 100%; text-align: left; padding: 0.75rem 1rem; font-size: 1.125rem; font-weight: 600;" value="10000" min="1">
+      </div>
+
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">GST Rate Slab</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="gst-rate-pills">
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="0"> 0%
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="5"> 5%
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="12"> 12%
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="18" checked> 18%
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-rate" value="28"> 28%
+          </label>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-weight: 600; display: block; margin-bottom: 0.5rem;">Calculation Mode</label>
+        <div style="display: flex; gap: 0.75rem;">
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-type" value="add" checked> Add GST (Exclusive)
+          </label>
+          <label class="badge" style="cursor: pointer; padding: 0.5rem 1rem; font-size: 0.875rem;">
+            <input type="radio" name="gst-type" value="remove"> Remove GST (Inclusive)
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Panel -->
+    <div style="background-color: var(--bg-subtle); border: 1px solid var(--border-subtle); padding: 1.75rem; border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: 1.25rem;">
+      <div>
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 0.25rem;">Total Gross Amount</div>
+        <div id="gst-result-total" style="font-size: 2.25rem; font-weight: 800; color: var(--primary); line-height: 1.2;">₹ 11,800.00</div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 1rem; display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.9375rem; color: var(--text-secondary);">Net / Base Amount:</span>
+        <span id="gst-result-net" style="font-size: 1.125rem; font-weight: 700;">₹ 10,000.00</span>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.9375rem; color: var(--text-secondary);">Total GST Tax:</span>
+        <span id="gst-result-tax" style="font-size: 1.125rem; font-weight: 700; color: var(--accent);">₹ 1,800.00</span>
+      </div>
+
+      <div style="background: var(--bg-surface); padding: 0.875rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); font-size: 0.875rem; display: flex; justify-content: space-around; text-align: center;">
+        <div>
+          <div style="color: var(--text-muted); font-size: 0.75rem;">CGST (50%)</div>
+          <div id="gst-result-cgst" style="font-weight: 700; color: var(--text-primary);">₹ 900.00</div>
+        </div>
+        <div style="border-right: 1px solid var(--border-subtle);"></div>
+        <div>
+          <div style="color: var(--text-muted); font-size: 0.75rem;">SGST (50%)</div>
+          <div id="gst-result-sgst" style="font-weight: 700; color: var(--text-primary);">₹ 900.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- How To Steps -->
+<section class="content-section">
+  <h2 class="section-h2">How to Use GST Calculator</h2>
+  <div class="how-to-steps">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div>
+        <p style="font-weight: 500;">Enter base or gross amount</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div>
+        <p style="font-weight: 500;">Select GST slab rate or custom percent</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <div>
+        <p style="font-weight: 500;">Select Add GST or Remove GST</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-number">4</div>
+      <div>
+        <p style="font-weight: 500;">Toggle inter-state (IGST) or intra-state (CGST/SGST)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Detailed SEO Explanation (300+ Words) -->
+<section class="content-section">
+  <h2 class="section-h2">About GST Calculator</h2>
+  <div class="article-prose">
+      <p>
+        Welcome to GST Calculator on ToolNest — the fast, free, and secure way to handle your everyday digital tasks directly in your web browser. Whether you are submitting application forms, compressing images for job portals, managing receipts, or calculating financial investments, ToolNest gives you reliable utilities without unnecessary friction.
+      </p>
+      <p>
+        Unlike many alternative tools that require credit cards, trial subscriptions, or mandatory account creation, ToolNest was built from the ground up to respect your time and privacy. There is nothing to install and zero software bloat. Simply open the page on your mobile phone, tablet, or desktop computer, and start using the tool right away.
+      </p>
+      <h3>Security and Complete File Privacy</h3>
+      <p>
+        Security is our highest priority. All files uploaded to ToolNest server tools are processed in volatile memory and purged immediately after execution. We never keep archives, inspect user contents, or store filenames in our databases or access logs. For our browser-based text formatting and calculator tools, data never even leaves your local computer.
+      </p>
+      <h3>Built for Speed and Reliability</h3>
+      <p>
+        Hosted across global content delivery networks, ToolNest pages load in milliseconds even on standard mobile data connections. Bookmark this page for quick access whenever you need dependable everyday tools.
+      </p>
+  </div>
+</section>
+
+<!-- Frequently Asked Questions -->
+
+<!-- Related Tools -->
+<section class="content-section">
+  <h2 class="section-h2">Related Tools</h2>
+  <div class="tool-grid">
+    <a href="/emi-calculator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">EMI Calculator</div>
+      </div>
+      <p class="tool-card-desc">Calculate monthly loan EMI, total interest, and complete month-by-month repayment schedule.</p>
+    </a>
+    <a href="/sip-calculator" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">SIP Calculator</div>
+      </div>
+      <p class="tool-card-desc">Calculate mutual fund SIP investment returns with optional yearly step-up.</p>
+    </a>
+    <a href="/merge-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Merge PDF</div>
+      </div>
+      <p class="tool-card-desc">Combine multiple PDF files into one single document in seconds.</p>
+    </a>
+  </div>
+</section>
+
+<div class="ad-slot-container ad-slot-bottom" aria-hidden="true" style="display: none;"></div>
+    </div>
+  </main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="site-brand" style="margin-bottom: 0.75rem;">
+          <span>ToolNest</span>
+        </div>
+        <p style="font-size: 0.875rem; color: var(--text-muted); max-width: 280px;">
+          Fast, free everyday file and finance tools. No signup required, zero tracking of files or documents.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">PDF & Image Tools</h4>
+        <ul class="footer-links">
+          <li><a href="/merge-pdf" class="footer-link">Merge PDF</a></li>
+          <li><a href="/compress-pdf" class="footer-link">Compress PDF</a></li>
+          <li><a href="/split-pdf" class="footer-link">Split PDF</a></li>
+          <li><a href="/compress-image" class="footer-link">Compress Image</a></li>
+          <li><a href="/convert-image" class="footer-link">Convert Image</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Calculators & Text</h4>
+        <ul class="footer-links">
+          <li><a href="/emi-calculator" class="footer-link">EMI Calculator</a></li>
+          <li><a href="/sip-calculator" class="footer-link">SIP Calculator</a></li>
+          <li><a href="/gst-calculator" class="footer-link">GST Calculator</a></li>
+          <li><a href="/qr-code-generator" class="footer-link">QR Generator</a></li>
+          <li><a href="/word-counter" class="footer-link">Word Counter</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">About & Policies</h4>
+        <ul class="footer-links">
+          <li><a href="/about" class="footer-link">About Us</a></li>
+          <li><a href="/privacy" class="footer-link">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link">Terms of Service</a></li>
+          <li><a href="/contact" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 ToolNest. All rights reserved.</p>
+      <p style="display: flex; gap: 1rem;">
+        <span>Free & Private Online Tools</span>
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Core Scripts -->
+  <script src="/assets/js/theme.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/tools.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

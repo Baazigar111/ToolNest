@@ -1,0 +1,4 @@
+# ToolNest Clean URL 301 Permanent Redirects
+/category/:slug  /:slug  301
+/tools/:slug     /:slug  301
+/tool/:slug      /:slug  301

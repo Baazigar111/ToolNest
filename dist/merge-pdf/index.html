@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Merge PDF Files Online Free - ToolNest</title>
+  <meta name="description" content="Combine 2 to 5 PDF documents into a single organized file for free without signup.">
+  <link rel="canonical" href="http://localhost:3000/merge-pdf">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Merge PDF Files Online Free - ToolNest">
+  <meta property="og:description" content="Combine 2 to 5 PDF documents into a single organized file for free without signup.">
+  <meta property="og:url" content="http://localhost:3000/merge-pdf">
+  <meta property="og:site_name" content="ToolNest">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Structured Data (JSON-LD) -->
+<!-- SoftwareApplication, BreadcrumbList, and FAQPage Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "Merge PDF",
+      "operatingSystem": "All",
+      "applicationCategory": "UtilitiesApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Combine 2 to 5 PDF documents into a single organized file for free without signup."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "http://localhost:3000/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "PDF Tools",
+          "item": "http://localhost:3000/pdf"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Merge PDF",
+          "item": "http://localhost:3000/merge-pdf"
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+  <!-- Global API Client Config -->
+  <script>
+    window.TOOLNEST_CONFIG = {
+      apiBaseUrl: "https://toolnest-4w95.onrender.com"
+    };
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="site-brand" aria-label="ToolNest Home">
+      <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="currentColor"/>
+        <path d="M10 22L16 10L22 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12.5 18H19.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span>ToolNest</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main Navigation">
+      <a href="/" class="nav-link ">Home</a>
+      <a href="/pdf" class="nav-link ">PDF</a>
+      <a href="/image" class="nav-link ">Image</a>
+      <a href="/qr" class="nav-link ">QR</a>
+      <a href="/finance" class="nav-link ">Finance</a>
+      <a href="/blog" class="nav-link ">Guides</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle theme">
+        <span class="theme-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+<div id="api-status-banner" class="api-alert-banner" role="status"></div>
+  <main class="main-content">
+    <div class="container">
+<div class="ad-slot-container ad-slot-top" aria-hidden="true" style="display: none;"></div>
+
+<nav class="breadcrumb-nav" aria-label="Breadcrumb">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-item"><a href="/" class="breadcrumb-link">Home</a></li>
+    <li class="breadcrumb-separator" aria-hidden="true">&rsaquo;</li>
+    <li class="breadcrumb-item"><a href="/pdf" class="breadcrumb-link">PDF Tools</a></li>
+    <li class="breadcrumb-separator" aria-hidden="true">&rsaquo;</li>
+    <li class="breadcrumb-item breadcrumb-current" aria-current="page">Merge PDF</li>
+  </ol>
+</nav>
+
+<header class="tool-page-header">
+  <h1 class="tool-page-h1">Merge PDF</h1>
+  <p class="tool-page-intro">Combine multiple PDF files into one single document in seconds.</p>
+</header>
+
+<!-- Tool Interactive Workspace -->
+<div class="tool-workspace" id="upload-tool-app" data-endpoint="/api/pdf/merge">
+  <div class="dropzone-container" id="dropzone" tabindex="0" role="button" aria-label="Upload files">
+    <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="17 8 12 3 7 8"/>
+      <line x1="12" y1="3" x2="12" y2="15"/>
+    </svg>
+    <div class="dropzone-title">Click to choose or drag & drop files here</div>
+    <div class="dropzone-subtitle" id="file-limit-hint">
+        Supports PDF files up to 10 MB (max 5 files)
+    </div>
+    <input
+      type="file"
+      id="file-input"
+      class="file-input-hidden"
+multiple      accept=".pdf,application/pdf"
+    >
+  </div>
+
+  <div id="file-list-container" style="display: none; margin-top: 1.5rem;">
+    <h3 style="font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.5rem;">Selected Files:</h3>
+    <ul id="selected-files-list" style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;"></ul>
+  </div>
+
+  <!-- Dynamic Tool Specific Options -->
+
+  <div class="progress-container" id="upload-progress">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-text">
+      <span id="progress-status">Processing...</span>
+      <span id="progress-percentage">0%</span>
+    </div>
+  </div>
+
+  <div id="error-message-box" style="display: none; margin-top: 1.25rem; padding: 0.75rem 1rem; border-radius: var(--radius-md); background-color: var(--danger-bg); color: var(--danger); font-size: 0.9375rem;"></div>
+
+  <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+    <button type="button" id="start-process-btn" class="btn btn-primary btn-block server-tool-btn" disabled>
+      Merge PDF
+    </button>
+  </div>
+
+  <div class="privacy-notice">
+    <svg class="privacy-notice-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    <span>Files are processed securely in memory and deleted immediately after processing.</span>
+  </div>
+</div>
+<!-- How To Steps -->
+<section class="content-section">
+  <h2 class="section-h2">How to Use Merge PDF</h2>
+  <div class="how-to-steps">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div>
+        <p style="font-weight: 500;">Select 2 to 5 PDF files</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div>
+        <p style="font-weight: 500;">Reorder files if desired</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <div>
+        <p style="font-weight: 500;">Click Merge PDF</p>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-number">4</div>
+      <div>
+        <p style="font-weight: 500;">Download your merged PDF</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Detailed SEO Explanation (300+ Words) -->
+<section class="content-section">
+  <h2 class="section-h2">About Merge PDF</h2>
+  <div class="article-prose">
+      <p>
+        Welcome to Merge PDF on ToolNest — the fast, free, and secure way to handle your everyday digital tasks directly in your web browser. Whether you are submitting application forms, compressing images for job portals, managing receipts, or calculating financial investments, ToolNest gives you reliable utilities without unnecessary friction.
+      </p>
+      <p>
+        Unlike many alternative tools that require credit cards, trial subscriptions, or mandatory account creation, ToolNest was built from the ground up to respect your time and privacy. There is nothing to install and zero software bloat. Simply open the page on your mobile phone, tablet, or desktop computer, and start using the tool right away.
+      </p>
+      <h3>Security and Complete File Privacy</h3>
+      <p>
+        Security is our highest priority. All files uploaded to ToolNest server tools are processed in volatile memory and purged immediately after execution. We never keep archives, inspect user contents, or store filenames in our databases or access logs. For our browser-based text formatting and calculator tools, data never even leaves your local computer.
+      </p>
+      <h3>Built for Speed and Reliability</h3>
+      <p>
+        Hosted across global content delivery networks, ToolNest pages load in milliseconds even on standard mobile data connections. Bookmark this page for quick access whenever you need dependable everyday tools.
+      </p>
+  </div>
+</section>
+
+<!-- Frequently Asked Questions -->
+
+<!-- Related Tools -->
+<section class="content-section">
+  <h2 class="section-h2">Related Tools</h2>
+  <div class="tool-grid">
+    <a href="/split-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Split PDF</div>
+      </div>
+      <p class="tool-card-desc">Extract specific pages or page ranges from a PDF document.</p>
+    </a>
+    <a href="/compress-pdf" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">Compress PDF</div>
+      </div>
+      <p class="tool-card-desc">Reduce PDF file size while maintaining sharp text and image clarity.</p>
+    </a>
+    <a href="/pdf-to-image" class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrapper">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="tool-card-title">PDF to Image</div>
+      </div>
+      <p class="tool-card-desc">Convert PDF pages into high-resolution PNG or JPG images.</p>
+    </a>
+  </div>
+</section>
+
+<div class="ad-slot-container ad-slot-bottom" aria-hidden="true" style="display: none;"></div>
+    </div>
+  </main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="site-brand" style="margin-bottom: 0.75rem;">
+          <span>ToolNest</span>
+        </div>
+        <p style="font-size: 0.875rem; color: var(--text-muted); max-width: 280px;">
+          Fast, free everyday file and finance tools. No signup required, zero tracking of files or documents.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">PDF & Image Tools</h4>
+        <ul class="footer-links">
+          <li><a href="/merge-pdf" class="footer-link">Merge PDF</a></li>
+          <li><a href="/compress-pdf" class="footer-link">Compress PDF</a></li>
+          <li><a href="/split-pdf" class="footer-link">Split PDF</a></li>
+          <li><a href="/compress-image" class="footer-link">Compress Image</a></li>
+          <li><a href="/convert-image" class="footer-link">Convert Image</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Calculators & Text</h4>
+        <ul class="footer-links">
+          <li><a href="/emi-calculator" class="footer-link">EMI Calculator</a></li>
+          <li><a href="/sip-calculator" class="footer-link">SIP Calculator</a></li>
+          <li><a href="/gst-calculator" class="footer-link">GST Calculator</a></li>
+          <li><a href="/qr-code-generator" class="footer-link">QR Generator</a></li>
+          <li><a href="/word-counter" class="footer-link">Word Counter</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">About & Policies</h4>
+        <ul class="footer-links">
+          <li><a href="/about" class="footer-link">About Us</a></li>
+          <li><a href="/privacy" class="footer-link">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link">Terms of Service</a></li>
+          <li><a href="/contact" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 ToolNest. All rights reserved.</p>
+      <p style="display: flex; gap: 1rem;">
+        <span>Free & Private Online Tools</span>
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Core Scripts -->
+  <script src="/assets/js/theme.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/tools.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>

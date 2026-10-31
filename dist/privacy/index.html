@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - ToolNest</title>
+  <meta name="description" content="ToolNest privacy and user information.">
+  <link rel="canonical" href="http://localhost:3000/privacy">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Privacy Policy - ToolNest">
+  <meta property="og:description" content="ToolNest privacy and user information.">
+  <meta property="og:url" content="http://localhost:3000/privacy">
+  <meta property="og:site_name" content="ToolNest">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ToolNest",
+    "url": "http://localhost:3000"
+  }
+  </script>
+
+  <!-- Global API Client Config -->
+  <script>
+    window.TOOLNEST_CONFIG = {
+      apiBaseUrl: "https://toolnest-4w95.onrender.com"
+    };
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="site-brand" aria-label="ToolNest Home">
+      <svg class="brand-icon" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="currentColor"/>
+        <path d="M10 22L16 10L22 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12.5 18H19.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span>ToolNest</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main Navigation">
+      <a href="/" class="nav-link ">Home</a>
+      <a href="/pdf" class="nav-link ">PDF</a>
+      <a href="/image" class="nav-link ">Image</a>
+      <a href="/qr" class="nav-link ">QR</a>
+      <a href="/finance" class="nav-link ">Finance</a>
+      <a href="/blog" class="nav-link ">Guides</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Toggle theme">
+        <span class="theme-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+<div id="api-status-banner" class="api-alert-banner" role="status"></div>
+  <main class="main-content">
+    <div class="container">
+<div class="ad-slot-container ad-slot-top" aria-hidden="true" style="display: none;"></div>
+
+<article class="content-section" style="max-width: 800px; margin: 0 auto 3rem;">
+  <h1 class="tool-page-h1">Privacy Policy</h1>
+  <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 2rem;">Last Updated: October 2026</p>
+
+  <div class="article-prose">
+    <p>
+      At <strong>ToolNest</strong>, protecting your privacy is our foundational commitment. This policy describes how data is handled when you visit our website and use our free tools.
+    </p>
+
+    <h3>1. File Processing and Zero Retention</h3>
+    <p>
+      When you upload files (such as PDFs or images) to our processing tools:
+    </p>
+    <ul>
+      <li>Your files are transmitted securely over encrypted HTTPS connections.</li>
+      <li>Files are processed exclusively in transient volatile memory.</li>
+      <li>Any temporary artifacts generated during conversion are permanently deleted immediately in a protected cleanup routine.</li>
+      <li>We <strong>never</strong> inspect file contents, read private data, or store filenames in our databases or server logs.</li>
+    </ul>
+
+    <h3>2. Client-Side Browser Utilities</h3>
+    <p>
+      Our text utilities (Word Counter, Case Converter, JSON Formatter) and financial calculators (EMI, SIP, GST) execute entirely in your local browser through client-side JavaScript. <strong>Your text and calculations are never transmitted to our servers.</strong>
+    </p>
+
+    <h3>3. Cookies</h3>
+    <p>
+      ToolNest strictly limits cookie usage to essential functions:
+    </p>
+    <ul>
+      <li><strong>Theme Preference:</strong> Remembers your light or dark mode selection.</li>
+      <li><strong>Daily Usage Throttling:</strong> An anonymous, hashed counter to prevent abusive automated traffic and ensure fair server access for all visitors.</li>
+    </ul>
+    <p>We do not use invasive tracking cookies or sell your personal data to third parties.</p>
+
+    <h3>4. Analytics & Logging</h3>
+    <p>
+      We track aggregated usage totals (e.g. number of successful merges per day) to manage server capacity. These counters contain only aggregate integers and <strong>never record visitor IP addresses, individual user identifiers, or filenames</strong>.
+    </p>
+  </div>
+</article>
+
+<div class="ad-slot-container ad-slot-bottom" aria-hidden="true" style="display: none;"></div>
+    </div>
+  </main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="site-brand" style="margin-bottom: 0.75rem;">
+          <span>ToolNest</span>
+        </div>
+        <p style="font-size: 0.875rem; color: var(--text-muted); max-width: 280px;">
+          Fast, free everyday file and finance tools. No signup required, zero tracking of files or documents.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">PDF & Image Tools</h4>
+        <ul class="footer-links">
+          <li><a href="/merge-pdf" class="footer-link">Merge PDF</a></li>
+          <li><a href="/compress-pdf" class="footer-link">Compress PDF</a></li>
+          <li><a href="/split-pdf" class="footer-link">Split PDF</a></li>
+          <li><a href="/compress-image" class="footer-link">Compress Image</a></li>
+          <li><a href="/convert-image" class="footer-link">Convert Image</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Calculators & Text</h4>
+        <ul class="footer-links">
+          <li><a href="/emi-calculator" class="footer-link">EMI Calculator</a></li>
+          <li><a href="/sip-calculator" class="footer-link">SIP Calculator</a></li>
+          <li><a href="/gst-calculator" class="footer-link">GST Calculator</a></li>
+          <li><a href="/qr-code-generator" class="footer-link">QR Generator</a></li>
+          <li><a href="/word-counter" class="footer-link">Word Counter</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">About & Policies</h4>
+        <ul class="footer-links">
+          <li><a href="/about" class="footer-link">About Us</a></li>
+          <li><a href="/privacy" class="footer-link">Privacy Policy</a></li>
+          <li><a href="/terms" class="footer-link">Terms of Service</a></li>
+          <li><a href="/contact" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 ToolNest. All rights reserved.</p>
+      <p style="display: flex; gap: 1rem;">
+        <span>Free & Private Online Tools</span>
+      </p>
+    </div>
+  </div>
+</footer>
+  <!-- Core Scripts -->
+  <script src="/assets/js/theme.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/tools.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
