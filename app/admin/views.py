@@ -104,7 +104,9 @@ class ToolAdmin(ModelView, model=Tool):
         Tool.canonical_path,
     ]
 
-    async def after_model_change(self, data: dict, is_created: bool, request: Any) -> None:
+    async def after_model_change(
+        self, data: dict, model: Any, is_created: bool, request: Any
+    ) -> None:
         """Invalidate in-memory tool cache when a tool is modified or killed."""
         ToolService.clear_cache()
 
@@ -182,7 +184,9 @@ class SiteSettingAdmin(ModelView, model=SiteSetting):
         SiteSetting.description,
     ]
 
-    async def after_model_change(self, data: dict, is_created: bool, request: Any) -> None:
+    async def after_model_change(
+        self, data: dict, model: Any, is_created: bool, request: Any
+    ) -> None:
         """Invalidate 5-minute settings cache immediately upon configuration change."""
         SettingsService.invalidate_cache()
 

@@ -117,3 +117,64 @@ def test_admin_self_deletion_prevented(admin_client: TestClient, db_session: Ses
     # Account remains in database
     persisted = db_session.scalar(select(AdminUser).where(AdminUser.id == self_admin.id))
     assert persisted is not None
+
+
+def test_admin_tool_edit_toggle_active(admin_client: TestClient, db_session: Session):
+    """Verify that editing a tool (toggling is_active) succeeds and executes after_model_change."""
+    admin_user = AdminUser(
+        email="tooladmin@toolnest.example",
+        password_hash=hash_password("SuperSecret123!"),
+        is_active=True,
+    )
+    tool = Tool(
+        name="Convert Image",
+        slug="convert-image",
+        tool_type="image",
+        endpoint="/api/image/convert",
+        is_active=True,
+        description="Convert images between formats.",
+    )
+    db_session.add_all([admin_user, tool])
+    db_session.commit()
+
+    admin_client.post(
+        "/admin/login",
+        data={"username": "tooladmin@toolnest.example", "password": "SuperSecret123!"},
+        follow_redirects=True,
+    )
+
+    # Edit the tool - toggle is_active to False (omitted checkbox in HTML form means False)
+    edit_resp = admin_client.post(
+        f"/admin/tool/edit/{tool.id}",
+        data={
+            "name": "Convert Image",
+            "slug": "convert-image",
+            "tool_type": "image",
+            "endpoint": "/api/image/convert",
+            "description": "Convert images between formats.",
+        },
+        follow_redirects=True,
+    )
+    assert edit_resp.status_code == 200
+    assert "takes 4 positional arguments but 5 were given" not in edit_resp.text
+
+    # Verify tool in database was updated
+    db_session.expire_all()
+    updated_tool = db_session.scalar(select(Tool).where(Tool.id == tool.id))
+    assert updated_tool is not None
+    assert updated_tool.is_active is False
+
+
+def test_admin_after_model_change_signatures():
+    """Verify ToolAdmin and SiteSettingAdmin match SQLAdmin ModelView after_model_change signature."""
+    import inspect
+
+    from sqladmin import ModelView
+
+    from app.admin.views import SiteSettingAdmin, ToolAdmin
+
+    expected_params = list(inspect.signature(ModelView.after_model_change).parameters.keys())
+    assert list(inspect.signature(ToolAdmin.after_model_change).parameters.keys()) == expected_params
+    assert list(inspect.signature(SiteSettingAdmin.after_model_change).parameters.keys()) == expected_params
+
+
