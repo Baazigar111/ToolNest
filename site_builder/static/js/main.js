@@ -132,6 +132,24 @@ document.addEventListener('DOMContentLoaded', function () {
       renderFileList();
     }
 
+    // Split PDF mode switcher
+    const splitRadios = document.querySelectorAll('input[name="split-mode"]');
+    const splitRangeBox = document.getElementById('split-range-container');
+    const splitAllBox = document.getElementById('split-all-container');
+    if (splitRadios.length > 0 && splitRangeBox && splitAllBox) {
+      splitRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+          if (radio.value === 'ranges') {
+            splitRangeBox.style.display = 'block';
+            splitAllBox.style.display = 'none';
+          } else {
+            splitRangeBox.style.display = 'none';
+            splitAllBox.style.display = 'block';
+          }
+        });
+      });
+    }
+
     if (dropzone && fileInput) {
       dropzone.addEventListener('click', () => fileInput.click());
       dropzone.addEventListener('dragover', (e) => {
