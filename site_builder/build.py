@@ -111,7 +111,7 @@ class SiteBuilder:
                         is_active=True,
                     )
                     tools.append(t)
-                    if cat:
+                    if cat and t not in cat.tools:
                         cat.tools.append(t)
             except Exception as e:
                 print(f"Warning: could not load fallback seed data: {e}", file=sys.stderr)
