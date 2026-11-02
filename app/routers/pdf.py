@@ -81,10 +81,11 @@ async def split_pdf(
 @router.post("/compress", summary="Compress PDF File Size")
 async def compress_pdf(
     file: UploadFile = File(...),
+    target_kb: int | None = Form(None),
     level: str = Form("medium"),
     session: Session = Depends(get_db),
 ) -> Response:
-    """Compress PDF document using stream deflation and object deduplication."""
+    """Compress PDF document using target file size optimization or stream deflation."""
     tool = ToolService.get_tool_by_slug("compress-pdf", session)
     if tool and not tool.is_active:
         raise ToolDisabledError()
@@ -94,11 +95,24 @@ async def compress_pdf(
     try:
         content = await FileValidator.read_and_validate_pdf(file)
         content_len = len(content)
-        compressed_bytes = PDFService.compress_pdf(content, compression_level=level)
+        compressed_bytes = PDFService.compress_pdf(
+            content,
+            target_kb=target_kb,
+            compression_level=level,
+        )
+        saved_bytes = max(0, content_len - len(compressed_bytes))
+        saved_percent = round((saved_bytes / content_len) * 100, 1) if content_len > 0 else 0
+        filename = f"compressed_{target_kb}kb.pdf" if target_kb else "compressed.pdf"
         return Response(
             content=compressed_bytes,
             media_type="application/pdf",
-            headers={"Content-Disposition": 'attachment; filename="compressed.pdf"'},
+            headers={
+                "Content-Disposition": f'attachment; filename="{filename}"',
+                "X-Original-Size": str(content_len),
+                "X-Compressed-Size": str(len(compressed_bytes)),
+                "X-Saved-Percent": str(saved_percent),
+                "Access-Control-Expose-Headers": "X-Original-Size, X-Compressed-Size, X-Saved-Percent, Content-Disposition",
+            },
         )
     except Exception:
         is_error = True

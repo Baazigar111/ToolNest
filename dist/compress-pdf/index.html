@@ -151,12 +151,20 @@
 
   <!-- Dynamic Tool Specific Options -->
   <div class="tool-options" style="margin-top: 1.5rem;">
-    <label style="font-size: 0.875rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Compression Level:</label>
-    <div style="display: flex; gap: 0.75rem;">
-      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="low" checked> Low (Highest Quality)</label>
-      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="medium"> Medium (Balanced)</label>
-      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="high"> High (Smallest Size)</label>
+    <label style="font-size: 0.875rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Target File Size:</label>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+      <button type="button" class="btn btn-secondary pdf-target-preset" data-size="100" style="padding: 0.35rem 0.85rem; font-size: 0.8125rem;">100 KB</button>
+      <button type="button" class="btn btn-secondary pdf-target-preset" data-size="200" style="padding: 0.35rem 0.85rem; font-size: 0.8125rem;">200 KB</button>
+      <button type="button" class="btn btn-secondary pdf-target-preset" data-size="500" style="padding: 0.35rem 0.85rem; font-size: 0.8125rem;">500 KB</button>
+      <button type="button" class="btn btn-secondary pdf-target-preset" data-size="1024" style="padding: 0.35rem 0.85rem; font-size: 0.8125rem;">1 MB</button>
     </div>
+    <div style="display: flex; align-items: center; gap: 0.6rem; max-width: 320px;">
+      <input type="number" id="pdf-target-kb" name="target_kb" class="btn btn-secondary" style="width: 120px; text-align: left; padding: 0.45rem 0.75rem;" placeholder="e.g. 100" min="10" max="50000" value="200">
+      <span style="font-size: 0.875rem; color: var(--color-text-muted); font-weight: 500;">KB required</span>
+    </div>
+    <p style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.45rem; margin-bottom: 0;">
+      Preset shortcuts for official portals: 100 KB (Govt/SSC/UPSC), 200 KB (Job portals), 500 KB (Email).
+    </p>
   </div>
 
   <div class="progress-container" id="upload-progress">
@@ -186,30 +194,30 @@
 </div>
 <!-- How To Steps -->
 <section class="content-section">
-  <h2 class="section-h2">How to Use Compress PDF</h2>
+  <h2 class="section-h2">How to Compress PDF to Specific Size</h2>
   <div class="how-to-steps">
     <div class="step-card">
       <div class="step-number">1</div>
       <div>
-        <p style="font-weight: 500;">Upload your PDF file</p>
+        <p style="font-weight: 500;"><strong>Upload PDF Document:</strong> Drag & drop your PDF file or click the upload area.</p>
       </div>
     </div>
     <div class="step-card">
       <div class="step-number">2</div>
       <div>
-        <p style="font-weight: 500;">Choose compression level (low, medium, high)</p>
+        <p style="font-weight: 500;"><strong>Specify Target Size (KB):</strong> Pick a preset (100 KB, 200 KB, 500 KB, 1 MB) or enter your required maximum size in KB.</p>
       </div>
     </div>
     <div class="step-card">
       <div class="step-number">3</div>
       <div>
-        <p style="font-weight: 500;">Click Compress PDF</p>
+        <p style="font-weight: 500;"><strong>Click Compress PDF:</strong> ToolNest optimizes image resolution, removes redundant metadata, and deflates streams to hit your target limit.</p>
       </div>
     </div>
     <div class="step-card">
       <div class="step-number">4</div>
       <div>
-        <p style="font-weight: 500;">Download smaller PDF with before/after stats</p>
+        <p style="font-weight: 500;"><strong>Download Optimized PDF:</strong> Save your smaller, portal-ready PDF with instant before-and-after size stats.</p>
       </div>
     </div>
   </div>

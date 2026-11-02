@@ -133,7 +133,11 @@ class PDFService:
         return zip_buffer.getvalue(), "split_pages.zip", "application/zip"
 
     @staticmethod
-    def compress_pdf(pdf_content: bytes, compression_level: str = "medium") -> bytes:
+    def compress_pdf(
+        pdf_content: bytes,
+        target_kb: int | None = None,
+        compression_level: str = "medium",
+    ) -> bytes:
         """
         Compress PDF using pikepdf stream deflation, object deduplication, and PyMuPDF optimizations.
         """
@@ -153,22 +157,74 @@ class PDFService:
         except Exception:
             intermediate_bytes = pdf_content
 
-        # Second pass: PyMuPDF garbage collection and compression
+        target_bytes = target_kb * 1024 if target_kb else None
+
+        # Second pass: PyMuPDF garbage collection, stream and image optimizations
         try:
             import pymupdf as fitz
             doc = fitz.open(stream=intermediate_bytes, filetype="pdf")
-            final_stream = io.BytesIO()
-            doc.save(
-                final_stream,
-                garbage=4,
-                deflate=True,
-                clean=True,
-            )
+            first_stream = io.BytesIO()
+            doc.save(first_stream, garbage=4, deflate=True, clean=True)
+            doc_bytes = first_stream.getvalue()
+
+            # If target_bytes is specified and current size exceeds target, optimize embedded images
+            if target_bytes and len(doc_bytes) > target_bytes:
+                ratio = target_bytes / len(doc_bytes)
+                if ratio < 0.4:
+                    img_quality = 40
+                    max_dim = 1000
+                elif ratio < 0.7:
+                    img_quality = 60
+                    max_dim = 1400
+                else:
+                    img_quality = 75
+                    max_dim = 1800
+
+                from PIL import Image
+
+                processed_xrefs = set()
+                for page in doc:
+                    image_list = page.get_images(full=True)
+                    for img_info in image_list:
+                        xref = img_info[0]
+                        if xref in processed_xrefs:
+                            continue
+                        processed_xrefs.add(xref)
+                        try:
+                            pix = fitz.Pixmap(doc, xref)
+                            if pix.n >= 5:
+                                pix = fitz.Pixmap(fitz.csRGB, pix)
+                            img = Image.open(io.BytesIO(pix.tobytes("png")))
+                            if img.mode in ("RGBA", "P"):
+                                img = img.convert("RGB")
+
+                            if max(img.size) > max_dim:
+                                img.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
+
+                            img_out = io.BytesIO()
+                            img.save(img_out, format="JPEG", quality=img_quality, optimize=True)
+                            page.replace_image(xref, stream=img_out.getvalue())
+                        except Exception:
+                            continue
+
+                second_stream = io.BytesIO()
+                doc.save(
+                    second_stream,
+                    garbage=4,
+                    deflate=True,
+                    clean=True,
+                    deflate_images=True,
+                    deflate_fonts=True,
+                )
+                doc.close()
+                compressed = second_stream.getvalue()
+                if len(compressed) < len(pdf_content):
+                    return compressed
+                return doc_bytes if len(doc_bytes) < len(pdf_content) else pdf_content
+
             doc.close()
-            final_bytes = final_stream.getvalue()
-            # If compressed size ended up larger, return the original content
-            if len(final_bytes) < len(pdf_content):
-                return final_bytes
+            if len(doc_bytes) < len(pdf_content):
+                return doc_bytes
             return pdf_content
         except Exception:
             return intermediate_bytes if len(intermediate_bytes) < len(pdf_content) else pdf_content
