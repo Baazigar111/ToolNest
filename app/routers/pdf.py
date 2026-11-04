@@ -81,7 +81,7 @@ async def split_pdf(
 @router.post("/compress", summary="Compress PDF File Size")
 async def compress_pdf(
     file: UploadFile = File(...),
-    level: str = Form("medium"),
+    target_kb: int | None = Form(None),
     session: Session = Depends(get_db),
 ) -> Response:
     """Compress PDF document using multi-pass stream deflation and image optimizations."""
@@ -94,7 +94,7 @@ async def compress_pdf(
     try:
         content = await FileValidator.read_and_validate_pdf(file)
         content_len = len(content)
-        compressed_bytes = PDFService.compress_pdf(content, compression_level=level)
+        compressed_bytes = PDFService.compress_pdf(content, target_kb=target_kb)
         return Response(
             content=compressed_bytes,
             media_type="application/pdf",

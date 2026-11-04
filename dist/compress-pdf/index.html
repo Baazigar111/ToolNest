@@ -151,11 +151,10 @@
 
   <!-- Dynamic Tool Specific Options -->
   <div class="tool-options" style="margin-top: 1.5rem;">
-    <label style="font-size: 0.875rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Compression Level:</label>
-    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="low" checked> Low (Highest Quality)</label>
-      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="medium"> Medium (Balanced)</label>
-      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="high"> High (Smallest Size)</label>
+    <label for="pdf-target-kb" style="font-size: 0.875rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Target File Size (KB):</label>
+    <div style="display: flex; align-items: center; gap: 0.6rem;">
+      <input type="number" id="pdf-target-kb" class="btn btn-secondary" style="width: 140px; text-align: left; padding: 0.45rem 0.75rem;" placeholder="e.g. 200" min="10" max="50000">
+      <span style="font-size: 0.875rem; color: var(--color-text-muted);">KB</span>
     </div>
   </div>
 

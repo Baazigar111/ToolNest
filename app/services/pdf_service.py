@@ -135,6 +135,7 @@ class PDFService:
     @staticmethod
     def compress_pdf(
         pdf_content: bytes,
+        target_kb: int | None = None,
         compression_level: str = "medium",
     ) -> bytes:
         """
@@ -142,9 +143,19 @@ class PDFService:
         1. pikepdf: stream deflation + object deduplication
         2. pypdf: compress_content_streams() per page (zlib on content streams)
         3. PyMuPDF: full garbage collect + deflate_images + deflate_fonts
-        4. For 'high' level: downsample embedded images via Pillow
+        4. Image downsampling via Pillow (aggressiveness driven by target_kb ratio)
         Returns the smallest result that is strictly smaller than the original.
         """
+        # Derive compression_level from target_kb if provided
+        if target_kb is not None:
+            orig_kb = len(pdf_content) / 1024
+            ratio = target_kb / orig_kb if orig_kb > 0 else 1.0
+            if ratio < 0.4:
+                compression_level = "high"
+            elif ratio < 0.75:
+                compression_level = "medium"
+            else:
+                compression_level = "low"
         candidates: list[bytes] = [pdf_content]
 
         # --- Pass 1: pikepdf stream deflation ---

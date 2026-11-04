@@ -172,8 +172,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Additional tool-specific form inputs
-        const compressRadio = document.querySelector('input[name="compress-level"]:checked');
-        if (compressRadio) formData.append('level', compressRadio.value);
+        const targetKbInput = document.getElementById('pdf-target-kb');
+        if (targetKbInput && targetKbInput.value.trim()) {
+          formData.append('target_kb', targetKbInput.value.trim());
+        }
 
         const splitMode = document.querySelector('input[name="split-mode"]:checked');
         const splitRange = document.getElementById('split-range-input');
