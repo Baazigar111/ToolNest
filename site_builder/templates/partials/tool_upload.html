@@ -30,20 +30,12 @@
   <!-- Dynamic Tool Specific Options -->
   {% if tool.slug == 'compress-pdf' %}
   <div class="tool-options" style="margin-top: 1.5rem;">
-    <label style="font-size: 0.875rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Target File Size:</label>
-    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
-      <button type="button" class="btn btn-secondary pdf-target-preset" data-size="100" style="padding: 0.35rem 0.85rem; font-size: 0.8125rem;">100 KB</button>
-      <button type="button" class="btn btn-secondary pdf-target-preset" data-size="200" style="padding: 0.35rem 0.85rem; font-size: 0.8125rem;">200 KB</button>
-      <button type="button" class="btn btn-secondary pdf-target-preset" data-size="500" style="padding: 0.35rem 0.85rem; font-size: 0.8125rem;">500 KB</button>
-      <button type="button" class="btn btn-secondary pdf-target-preset" data-size="1024" style="padding: 0.35rem 0.85rem; font-size: 0.8125rem;">1 MB</button>
+    <label style="font-size: 0.875rem; font-weight: 600; display: block; margin-bottom: 0.5rem;">Compression Level:</label>
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="low" checked> Low (Highest Quality)</label>
+      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="medium"> Medium (Balanced)</label>
+      <label class="badge" style="cursor: pointer;"><input type="radio" name="compress-level" value="high"> High (Smallest Size)</label>
     </div>
-    <div style="display: flex; align-items: center; gap: 0.6rem; max-width: 320px;">
-      <input type="number" id="pdf-target-kb" name="target_kb" class="btn btn-secondary" style="width: 120px; text-align: left; padding: 0.45rem 0.75rem;" placeholder="e.g. 100" min="10" max="50000" value="200">
-      <span style="font-size: 0.875rem; color: var(--color-text-muted); font-weight: 500;">KB required</span>
-    </div>
-    <p style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.45rem; margin-bottom: 0;">
-      Preset shortcuts for official portals: 100 KB (Govt/SSC/UPSC), 200 KB (Job portals), 500 KB (Email).
-    </p>
   </div>
   {% elif tool.slug == 'split-pdf' %}
   <div class="tool-options" style="margin-top: 1.5rem;">

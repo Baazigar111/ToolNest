@@ -135,99 +135,108 @@ class PDFService:
     @staticmethod
     def compress_pdf(
         pdf_content: bytes,
-        target_kb: int | None = None,
         compression_level: str = "medium",
     ) -> bytes:
         """
-        Compress PDF using pikepdf stream deflation, object deduplication, and PyMuPDF optimizations.
+        Compress PDF using a multi-pass strategy:
+        1. pikepdf: stream deflation + object deduplication
+        2. pypdf: compress_content_streams() per page (zlib on content streams)
+        3. PyMuPDF: full garbage collect + deflate_images + deflate_fonts
+        4. For 'high' level: downsample embedded images via Pillow
+        Returns the smallest result that is strictly smaller than the original.
         """
+        candidates: list[bytes] = [pdf_content]
+
+        # --- Pass 1: pikepdf stream deflation ---
         try:
-            # First pass: pikepdf lossy-free stream deflation and structure clean
             with pikepdf.open(io.BytesIO(pdf_content)) as pdf:
-                # Remove unreferenced objects & deduplicate streams
                 pdf.remove_unreferenced_resources()
-                out_stream = io.BytesIO()
+                s1 = io.BytesIO()
                 pdf.save(
-                    out_stream,
+                    s1,
                     compress_streams=True,
                     object_stream_mode=pikepdf.ObjectStreamMode.generate,
                     stream_decode_level=pikepdf.StreamDecodeLevel.generalized,
                 )
-                intermediate_bytes = out_stream.getvalue()
+                candidates.append(s1.getvalue())
         except Exception:
-            intermediate_bytes = pdf_content
+            pass
 
-        target_bytes = target_kb * 1024 if target_kb else None
+        # --- Pass 2: pypdf compress_content_streams ---
+        try:
+            reader = pypdf.PdfReader(io.BytesIO(pdf_content))
+            writer = pypdf.PdfWriter()
+            for page in reader.pages:
+                page.compress_content_streams(level=9)
+                writer.add_page(page)
+            writer.compress_identical_objects(remove_identicals=True, remove_orphans=True)
+            s2 = io.BytesIO()
+            writer.write(s2)
+            candidates.append(s2.getvalue())
+        except Exception:
+            pass
 
-        # Second pass: PyMuPDF garbage collection, stream and image optimizations
+        # --- Pass 3: PyMuPDF full-flag save ---
+        best_so_far = min(candidates, key=len)
         try:
             import pymupdf as fitz
-            doc = fitz.open(stream=intermediate_bytes, filetype="pdf")
-            first_stream = io.BytesIO()
-            doc.save(first_stream, garbage=4, deflate=True, clean=True)
-            doc_bytes = first_stream.getvalue()
+            doc = fitz.open(stream=best_so_far, filetype="pdf")
+            s3 = io.BytesIO()
+            doc.save(
+                s3,
+                garbage=4,
+                deflate=True,
+                deflate_images=True,
+                deflate_fonts=True,
+                clean=True,
+            )
+            candidates.append(s3.getvalue())
 
-            # If target_bytes is specified and current size exceeds target, optimize embedded images
-            if target_bytes and len(doc_bytes) > target_bytes:
-                ratio = target_bytes / len(doc_bytes)
-                if ratio < 0.4:
-                    img_quality = 40
-                    max_dim = 1000
-                elif ratio < 0.7:
-                    img_quality = 60
-                    max_dim = 1400
-                else:
-                    img_quality = 75
-                    max_dim = 1800
+            # --- Pass 4 (high): downsample embedded images via Pillow ---
+            if compression_level == "high":
+                img_quality = 50
+                max_dim = 1200
+            elif compression_level == "medium":
+                img_quality = 72
+                max_dim = 1800
+            else:
+                img_quality = 85
+                max_dim = 2400
 
-                from PIL import Image
+            processed_xrefs: set[int] = set()
+            for page in doc:
+                for img_info in page.get_images(full=True):
+                    xref = img_info[0]
+                    if xref in processed_xrefs:
+                        continue
+                    processed_xrefs.add(xref)
+                    try:
+                        pix = fitz.Pixmap(doc, xref)
+                        if pix.n >= 5:
+                            pix = fitz.Pixmap(fitz.csRGB, pix)
+                        img = Image.open(io.BytesIO(pix.tobytes("png")))
+                        if img.mode in ("RGBA", "P"):
+                            img = img.convert("RGB")
+                        if max(img.size) > max_dim:
+                            img.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
+                        img_out = io.BytesIO()
+                        img.save(img_out, format="JPEG", quality=img_quality, optimize=True)
+                        page.replace_image(xref, stream=img_out.getvalue())
+                    except Exception:
+                        continue
 
-                processed_xrefs = set()
-                for page in doc:
-                    image_list = page.get_images(full=True)
-                    for img_info in image_list:
-                        xref = img_info[0]
-                        if xref in processed_xrefs:
-                            continue
-                        processed_xrefs.add(xref)
-                        try:
-                            pix = fitz.Pixmap(doc, xref)
-                            if pix.n >= 5:
-                                pix = fitz.Pixmap(fitz.csRGB, pix)
-                            img = Image.open(io.BytesIO(pix.tobytes("png")))
-                            if img.mode in ("RGBA", "P"):
-                                img = img.convert("RGB")
-
-                            if max(img.size) > max_dim:
-                                img.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
-
-                            img_out = io.BytesIO()
-                            img.save(img_out, format="JPEG", quality=img_quality, optimize=True)
-                            page.replace_image(xref, stream=img_out.getvalue())
-                        except Exception:
-                            continue
-
-                second_stream = io.BytesIO()
-                doc.save(
-                    second_stream,
-                    garbage=4,
-                    deflate=True,
-                    clean=True,
-                    deflate_images=True,
-                    deflate_fonts=True,
-                )
-                doc.close()
-                compressed = second_stream.getvalue()
-                if len(compressed) < len(pdf_content):
-                    return compressed
-                return doc_bytes if len(doc_bytes) < len(pdf_content) else pdf_content
+            if processed_xrefs:
+                s4 = io.BytesIO()
+                doc.save(s4, garbage=4, deflate=True, deflate_images=True, deflate_fonts=True, clean=True)
+                candidates.append(s4.getvalue())
 
             doc.close()
-            if len(doc_bytes) < len(pdf_content):
-                return doc_bytes
-            return pdf_content
         except Exception:
-            return intermediate_bytes if len(intermediate_bytes) < len(pdf_content) else pdf_content
+            pass
+
+        # Return the smallest candidate; fall back to original if nothing improved
+        best = min(candidates, key=len)
+        return best if len(best) < len(pdf_content) else pdf_content
 
     @staticmethod
     def pdf_to_images(

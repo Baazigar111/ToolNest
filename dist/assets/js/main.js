@@ -172,10 +172,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Additional tool-specific form inputs
-        const targetKbInput = document.getElementById('pdf-target-kb');
-        if (targetKbInput && targetKbInput.value.trim()) {
-          formData.append('target_kb', targetKbInput.value.trim());
-        }
         const compressRadio = document.querySelector('input[name="compress-level"]:checked');
         if (compressRadio) formData.append('level', compressRadio.value);
 
@@ -219,13 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
           // Determine appropriate download filename
           const mime = blob.type || '';
           let downloadName = 'toolnest_output';
-          if (mime.includes('pdf')) {
-            if (targetKbInput && targetKbInput.value.trim()) {
-              downloadName = `compressed_${targetKbInput.value.trim()}kb.pdf`;
-            } else {
-              downloadName = 'compressed.pdf';
-            }
-          }
+          if (mime.includes('pdf')) downloadName = 'compressed.pdf';
           else if (mime.includes('zip')) downloadName = 'toolnest_archive.zip';
           else if (mime.includes('jpeg') || mime.includes('jpg')) downloadName = 'toolnest_image.jpg';
           else if (mime.includes('png')) downloadName = 'toolnest_image.png';
@@ -247,31 +237,6 @@ document.addEventListener('DOMContentLoaded', function () {
           showError(err.message || 'Operation failed. Please try again.');
           startBtn.removeAttribute('disabled');
         }
-      });
-    }
-
-    // PDF Target Size Presets
-    const pdfPresets = document.querySelectorAll('.pdf-target-preset');
-    const pdfTargetInput = document.getElementById('pdf-target-kb');
-    if (pdfPresets.length > 0 && pdfTargetInput) {
-      pdfPresets.forEach(b => {
-        if (b.dataset.size === pdfTargetInput.value) b.classList.add('btn-primary');
-      });
-      pdfPresets.forEach(btn => {
-        btn.addEventListener('click', () => {
-          pdfTargetInput.value = btn.dataset.size;
-          pdfPresets.forEach(b => b.classList.remove('btn-primary'));
-          btn.classList.add('btn-primary');
-        });
-      });
-      pdfTargetInput.addEventListener('input', () => {
-        pdfPresets.forEach(b => {
-          if (b.dataset.size === pdfTargetInput.value) {
-            b.classList.add('btn-primary');
-          } else {
-            b.classList.remove('btn-primary');
-          }
-        });
       });
     }
 
