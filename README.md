@@ -15,7 +15,7 @@ ToolNest is a free online tools website providing everyday PDF tools, image util
 
 | Portal / Service | Local Development | Production / Live |
 | :--- | :--- | :--- |
-| **Public Website** | Open `dist/index.html` or `http://localhost:3000` | `https://toolnest-h75.pages.dev` (or custom domain) |
+| **Public Website** | Open `dist/index.html` or `http://localhost:3000` | `https://toolnest-b75.pages.dev/` (or custom domain) |
 | **Admin Dashboard** | `http://localhost:8000/admin` | `https://toolnest-4w95.onrender.com/admin` |
 | **Interactive API Docs** | `http://localhost:8000/docs` | `https://toolnest-4w95.onrender.com/docs` |
 | **API Health Check** | `http://localhost:8000/health` | `https://toolnest-4w95.onrender.com/health` |
