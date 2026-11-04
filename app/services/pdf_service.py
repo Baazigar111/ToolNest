@@ -133,6 +133,65 @@ class PDFService:
         return zip_buffer.getvalue(), "split_pages.zip", "application/zip"
 
     @staticmethod
+    def _rasterize_pdf_to_target(pdf_content: bytes, target_kb: int) -> bytes:
+        """
+        Rasterize each PDF page to JPEG and rebuild as a new PDF.
+        Uses iterative DPI/quality adjustment to approach target_kb.
+        This is a lossy operation but the only reliable way to hit a size target
+        for text/vector PDFs that have no embeddable images to compress.
+        """
+        import pymupdf as fitz
+
+        doc = fitz.open(stream=pdf_content, filetype="pdf")
+        num_pages = len(doc)
+        if num_pages == 0:
+            doc.close()
+            return pdf_content
+
+        per_page_kb = target_kb / num_pages
+
+        # Pick starting DPI and JPEG quality based on per-page budget
+        if per_page_kb < 10:
+            dpi, quality = 72, 30
+        elif per_page_kb < 20:
+            dpi, quality = 72, 45
+        elif per_page_kb < 40:
+            dpi, quality = 96, 55
+        elif per_page_kb < 80:
+            dpi, quality = 120, 65
+        else:
+            dpi, quality = 150, 75
+
+        def render(d: int, q: int) -> bytes:
+            pil_images: list[Image.Image] = []
+            for page in doc:
+                pix = page.get_pixmap(dpi=d)
+                img = Image.open(io.BytesIO(pix.tobytes("png")))
+                if img.mode != "RGB":
+                    img = img.convert("RGB")
+                buf = io.BytesIO()
+                img.save(buf, format="JPEG", quality=q, optimize=True)
+                pil_images.append(Image.open(buf))
+            out = io.BytesIO()
+            pil_images[0].save(
+                out, format="PDF", save_all=True, append_images=pil_images[1:]
+            )
+            return out.getvalue()
+
+        result = render(dpi, quality)
+
+        # One refinement pass: if still too large, reduce DPI; if too small, raise it
+        target_bytes = target_kb * 1024
+        if len(result) > target_bytes * 1.2 and dpi > 72:
+            new_dpi = max(72, int(dpi * (target_bytes / len(result)) ** 0.5))
+            result2 = render(new_dpi, max(30, quality - 10))
+            if len(result2) < len(result):
+                result = result2
+
+        doc.close()
+        return result
+
+    @staticmethod
     def compress_pdf(
         pdf_content: bytes,
         target_kb: int | None = None,
@@ -141,21 +200,10 @@ class PDFService:
         """
         Compress PDF using a multi-pass strategy:
         1. pikepdf: stream deflation + object deduplication
-        2. pypdf: compress_content_streams() per page (zlib on content streams)
-        3. PyMuPDF: full garbage collect + deflate_images + deflate_fonts
-        4. Image downsampling via Pillow (aggressiveness driven by target_kb ratio)
-        Returns the smallest result that is strictly smaller than the original.
+        2. pypdf: compress_content_streams() per page
+        3. PyMuPDF: full garbage collect + deflate all
+        4. If target_kb still not met: rasterize pages to JPEG (lossy fallback)
         """
-        # Derive compression_level from target_kb if provided
-        if target_kb is not None:
-            orig_kb = len(pdf_content) / 1024
-            ratio = target_kb / orig_kb if orig_kb > 0 else 1.0
-            if ratio < 0.4:
-                compression_level = "high"
-            elif ratio < 0.75:
-                compression_level = "medium"
-            else:
-                compression_level = "low"
         candidates: list[bytes] = [pdf_content]
 
         # --- Pass 1: pikepdf stream deflation ---
@@ -188,65 +236,28 @@ class PDFService:
             pass
 
         # --- Pass 3: PyMuPDF full-flag save ---
-        best_so_far = min(candidates, key=len)
         try:
             import pymupdf as fitz
-            doc = fitz.open(stream=best_so_far, filetype="pdf")
+            best_lossless = min(candidates, key=len)
+            doc = fitz.open(stream=best_lossless, filetype="pdf")
             s3 = io.BytesIO()
-            doc.save(
-                s3,
-                garbage=4,
-                deflate=True,
-                deflate_images=True,
-                deflate_fonts=True,
-                clean=True,
-            )
-            candidates.append(s3.getvalue())
-
-            # --- Pass 4 (high): downsample embedded images via Pillow ---
-            if compression_level == "high":
-                img_quality = 50
-                max_dim = 1200
-            elif compression_level == "medium":
-                img_quality = 72
-                max_dim = 1800
-            else:
-                img_quality = 85
-                max_dim = 2400
-
-            processed_xrefs: set[int] = set()
-            for page in doc:
-                for img_info in page.get_images(full=True):
-                    xref = img_info[0]
-                    if xref in processed_xrefs:
-                        continue
-                    processed_xrefs.add(xref)
-                    try:
-                        pix = fitz.Pixmap(doc, xref)
-                        if pix.n >= 5:
-                            pix = fitz.Pixmap(fitz.csRGB, pix)
-                        img = Image.open(io.BytesIO(pix.tobytes("png")))
-                        if img.mode in ("RGBA", "P"):
-                            img = img.convert("RGB")
-                        if max(img.size) > max_dim:
-                            img.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
-                        img_out = io.BytesIO()
-                        img.save(img_out, format="JPEG", quality=img_quality, optimize=True)
-                        page.replace_image(xref, stream=img_out.getvalue())
-                    except Exception:
-                        continue
-
-            if processed_xrefs:
-                s4 = io.BytesIO()
-                doc.save(s4, garbage=4, deflate=True, deflate_images=True, deflate_fonts=True, clean=True)
-                candidates.append(s4.getvalue())
-
+            doc.save(s3, garbage=4, deflate=True, deflate_images=True, deflate_fonts=True, clean=True)
             doc.close()
+            candidates.append(s3.getvalue())
         except Exception:
             pass
 
-        # Return the smallest candidate; fall back to original if nothing improved
         best = min(candidates, key=len)
+
+        # --- Pass 4: rasterize if target_kb is set and not yet met ---
+        if target_kb is not None and len(best) > target_kb * 1024:
+            try:
+                rasterized = PDFService._rasterize_pdf_to_target(pdf_content, target_kb)
+                candidates.append(rasterized)
+                best = min(candidates, key=len)
+            except Exception:
+                pass
+
         return best if len(best) < len(pdf_content) else pdf_content
 
     @staticmethod
