@@ -46,3 +46,13 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "C4"]
 ignore = ["E501", "B008", "E402"]
+
+[tool.pyrefly]
+search-path = [
+    ".",
+    ".venv/Lib/site-packages",
+]
+python-interpreter-path = ".venv/Scripts/python.exe"
+site-package-path = [
+    ".venv/Lib/site-packages",
+]
